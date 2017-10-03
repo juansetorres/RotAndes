@@ -48,7 +48,7 @@ public class DAOTablaRestaurantes {
 	
 	public ArrayList<Restaurante> darRestaurantes()throws SQLException, Exception{
 		ArrayList<Restaurante> restaurantes = new ArrayList<>();
-		String sql = "SELECT * FROM RESTAURANTS";
+		String sql = "SELECT * FROM RESTAURANTES";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
@@ -61,6 +61,37 @@ public class DAOTablaRestaurantes {
 			restaurantes.add(new Restaurante(id, tipoComida, paginaWeb));
 		}
 		return restaurantes;
+	}
+	
+	public void addRestaurante(Restaurante restaurante)throws SQLException, Exception{
+		String sql = "INSERT INTO RESTAURANTES VALUES (";
+		sql += restaurante.getId() + ",'";
+		sql += restaurante.getTipoComida()+",";
+		sql += restaurante.getPaginaWeb()+",";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+
+	}
+	public void upDateRest(Restaurante restaurante)throws SQLException, Exception{
+		String sql = "UPDATE RESTAURANTES SET ";
+		sql += "TIPOCOMIDA='" + restaurante.getTipoComida() + "',";
+		sql += "PAGINAWEB=" + restaurante.getPaginaWeb();
+		sql += " WHERE ID = " + restaurante.getId();
+
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	public void deleteRest(Restaurante restaurante)throws SQLException, Exception{
+		String sql = "DELETE FROM RESTAURANTES";
+		sql += " WHERE ID = " + restaurante.getId();
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
 	}
 
 
