@@ -2,5 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/ING SEBASTIAN TORRES/sisttrasn/java-server-master/WebContent/WEB-INF/lib/jackson-all-1.7.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ING SEBASTIAN TORRES/sisttrasn/java-server-master/WebContent/WEB-INF/lib/javax.servlet.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ING SEBASTIAN TORRES/sisttrasn/java-server-master/WebContent/WEB-INF/lib/javax.ws.rs.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ING SEBASTIAN TORRES/sisttrasn/java-server-master/WebContent/WEB-INF/lib/ojdbc6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
