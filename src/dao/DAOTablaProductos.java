@@ -5,10 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import vos.Restaurante;
+
+import vos.Producto;
 
 
-public class DAOTablaRestaurantes {
+
+public class DAOTablaProductos {
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
 	 */
@@ -18,12 +20,11 @@ public class DAOTablaRestaurantes {
 	 * Atributo que genera la conexión a la base de datos
 	 */
 	private Connection conn;
-
 	
-	public DAOTablaRestaurantes(){
+	
+	public DAOTablaProductos(){
 		recursos = new ArrayList<>();
 	}
-	
 	/**
 	 * Metodo que cierra todos los recursos que estan enel arreglo de recursos
 	 * <b>post: </b> Todos los recurso del arreglo de recursos han sido cerrados
@@ -45,72 +46,78 @@ public class DAOTablaRestaurantes {
 	public void setConn(Connection con){
 		this.conn = con;
 	}
-	
-	public ArrayList<Restaurante> darRestaurantes()throws SQLException, Exception{
-		ArrayList<Restaurante> restaurantes = new ArrayList<>();
-		String sql = "SELECT * FROM RESTAURANTES";
+	public ArrayList<Producto> darProductos()throws SQLException, Exception{
+		ArrayList<Producto> productos = new ArrayList<>();
+		String sql = "SELECT * FROM PRODUCTOS";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			String paginaWeb = rs.getString("PAGINAWEB");
+			String name = rs.getString("NAME");
 			Long id = rs.getLong("ID");
-			String tipoComida = rs.getString("TIPOCOMIDA");
+			String descrip = rs.getString("DESCRIPCION");
+			Integer costo = rs.getInt("COSTO");
+			Integer precio = rs.getInt("PRECIO");
 			
-			restaurantes.add(new Restaurante(id, tipoComida, paginaWeb));
+			productos.add(new Producto(id,name,descrip,costo,precio));
 		}
-		return restaurantes;
+		return productos;
 	}
-	public Restaurante darRestaurante(Long id)throws SQLException, Exception{
-		Restaurante video = null;
+	public Producto darProducto(Long id)throws SQLException, Exception{
+		Producto producto = null;
 
-		String sql = "SELECT * FROM RESTAURANTES WHERE ID =" + id;
+		String sql = "SELECT * FROM PRODUCTOS WHERE ID =" + id;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			String tipoComida = rs.getString("TIPOCOMIDA");
+			String name = rs.getString("NAME");
 			Long id2 = rs.getLong("ID");
-			String web = rs.getString("PAGINAWEB");
-			video = new Restaurante(id2,tipoComida,web);
+			String descrip = rs.getString("DESCRIPCION");
+			Integer costo = rs.getInt("COSTO");
+			Integer precio = rs.getInt("PRECIO");
+			producto = new Producto(id2,name,descrip,costo,precio);
 		}
 
-		return video;
+		return producto;
 	}
 	
-	public void addRestaurante(Restaurante restaurante)throws SQLException, Exception{
-		String sql = "INSERT INTO RESTAURANTES VALUES (";
-		sql += restaurante.getId() + ",'";
-		sql += restaurante.getTipoComida()+",";
-		sql += restaurante.getPaginaWeb()+",";
+	public void addProducto(Producto Rproducto)throws SQLException, Exception{
+		String sql = "INSERT INTO PRODUCTOS VALUES (";
+		sql += Rproducto.getId() + ",'";
+		sql += Rproducto.getName()+",";
+		sql += Rproducto.getDescrip()+",";
+		sql += Rproducto.getCosto()+",";
+		sql += Rproducto.getPrecio()+",";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 
 	}
-	public void upDateRest(Restaurante restaurante)throws SQLException, Exception{
-		String sql = "UPDATE RESTAURANTES SET ";
-		sql += "TIPOCOMIDA='" + restaurante.getTipoComida() + "',";
-		sql += "PAGINAWEB=" + restaurante.getPaginaWeb();
-		sql += " WHERE ID = " + restaurante.getId();
+	public void upDateUsu(Producto producto)throws SQLException, Exception{
+		String sql = "UPDATE PRODUCTOS SET ";
+		sql += "NAME='" + producto.getName() + "',";
+		sql += "DESCRIPCION=" + producto.getDescrip();
+		sql += "COSTO=" + producto.getCosto();
+		sql += "PRECIO=" + producto.getPrecio();
+		sql += " WHERE ID = " + producto.getId();
 
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
-	public void deleteRest(Restaurante restaurante)throws SQLException, Exception{
-		String sql = "DELETE FROM RESTAURANTES";
-		sql += " WHERE ID = " + restaurante.getId();
+	public void deleteRest(Producto producto)throws SQLException, Exception{
+		String sql = "DELETE FROM Usuarios";
+		sql += " WHERE ID = " + producto.getId();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
-
 
 }

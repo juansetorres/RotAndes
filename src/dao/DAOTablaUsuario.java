@@ -5,10 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import vos.Restaurante;
+
+import vos.Usuario;
 
 
-public class DAOTablaRestaurantes {
+public class DAOTablaUsuario {
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
 	 */
@@ -18,12 +19,11 @@ public class DAOTablaRestaurantes {
 	 * Atributo que genera la conexión a la base de datos
 	 */
 	private Connection conn;
-
 	
-	public DAOTablaRestaurantes(){
+	
+	public DAOTablaUsuario(){
 		recursos = new ArrayList<>();
 	}
-	
 	/**
 	 * Metodo que cierra todos los recursos que estan enel arreglo de recursos
 	 * <b>post: </b> Todos los recurso del arreglo de recursos han sido cerrados
@@ -45,72 +45,72 @@ public class DAOTablaRestaurantes {
 	public void setConn(Connection con){
 		this.conn = con;
 	}
-	
-	public ArrayList<Restaurante> darRestaurantes()throws SQLException, Exception{
-		ArrayList<Restaurante> restaurantes = new ArrayList<>();
-		String sql = "SELECT * FROM RESTAURANTES";
+	public ArrayList<Usuario> darUsuarios()throws SQLException, Exception{
+		ArrayList<Usuario> usuarios = new ArrayList<>();
+		String sql = "SELECT * FROM USUARIOS";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			String paginaWeb = rs.getString("PAGINAWEB");
+			String name = rs.getString("NAME");
 			Long id = rs.getLong("ID");
-			String tipoComida = rs.getString("TIPOCOMIDA");
+			String correo = rs.getString("CORREO");
 			
-			restaurantes.add(new Restaurante(id, tipoComida, paginaWeb));
+			usuarios.add(new Usuario(id,correo,name));
 		}
-		return restaurantes;
+		return usuarios;
 	}
-	public Restaurante darRestaurante(Long id)throws SQLException, Exception{
-		Restaurante video = null;
+	public Usuario darUsuario(Long id)throws SQLException, Exception{
+		Usuario usuario = null;
 
-		String sql = "SELECT * FROM RESTAURANTES WHERE ID =" + id;
+		String sql = "SELECT * FROM USUARIOS WHERE ID =" + id;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			String tipoComida = rs.getString("TIPOCOMIDA");
+			String name = rs.getString("NAME");
 			Long id2 = rs.getLong("ID");
-			String web = rs.getString("PAGINAWEB");
-			video = new Restaurante(id2,tipoComida,web);
+			String correo = rs.getString("CORREO");
+			usuario = new Usuario(id2,correo,name);
 		}
 
-		return video;
+		return usuario;
 	}
 	
-	public void addRestaurante(Restaurante restaurante)throws SQLException, Exception{
-		String sql = "INSERT INTO RESTAURANTES VALUES (";
-		sql += restaurante.getId() + ",'";
-		sql += restaurante.getTipoComida()+",";
-		sql += restaurante.getPaginaWeb()+",";
+	public void addUsuario(Usuario Rusuario)throws SQLException, Exception{
+		String sql = "INSERT INTO USUARIOS VALUES (";
+		sql += Rusuario.getId() + ",'";
+		sql += Rusuario.getCorreo()+",";
+		sql += Rusuario.getName()+",";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 
 	}
-	public void upDateRest(Restaurante restaurante)throws SQLException, Exception{
-		String sql = "UPDATE RESTAURANTES SET ";
-		sql += "TIPOCOMIDA='" + restaurante.getTipoComida() + "',";
-		sql += "PAGINAWEB=" + restaurante.getPaginaWeb();
-		sql += " WHERE ID = " + restaurante.getId();
+	public void upDateUsu(Usuario usuario)throws SQLException, Exception{
+		String sql = "UPDATE USUARIOS SET ";
+		sql += "NAME='" + usuario.getName() + "',";
+		sql += "CORREO=" + usuario.getCorreo();
+		sql += " WHERE ID = " + usuario.getId();
 
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
-	public void deleteRest(Restaurante restaurante)throws SQLException, Exception{
-		String sql = "DELETE FROM RESTAURANTES";
-		sql += " WHERE ID = " + restaurante.getId();
+	public void deleteRest(Usuario usuario)throws SQLException, Exception{
+		String sql = "DELETE FROM Usuarios";
+		sql += " WHERE ID = " + usuario.getId();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
+	
 
 
 }
