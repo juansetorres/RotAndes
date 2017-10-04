@@ -84,8 +84,8 @@ public class DAOTablaRestaurantes {
 	public void addRestaurante(Restaurante restaurante)throws SQLException, Exception{
 		String sql = "INSERT INTO RESTAURANTES VALUES (";
 		sql += restaurante.getId() + ",'";
-		sql += restaurante.getTipoComida()+",";
-		sql += restaurante.getPaginaWeb()+",";
+		sql += restaurante.getTipoComida()+"','";
+		sql += restaurante.getPaginaWeb()+"'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -95,7 +95,7 @@ public class DAOTablaRestaurantes {
 	public void upDateRest(Restaurante restaurante)throws SQLException, Exception{
 		String sql = "UPDATE RESTAURANTES SET ";
 		sql += "TIPOCOMIDA='" + restaurante.getTipoComida() + "',";
-		sql += "PAGINAWEB=" + restaurante.getPaginaWeb();
+		sql += "PAGINAWEB='" + restaurante.getPaginaWeb()+"'";
 		sql += " WHERE ID = " + restaurante.getId();
 
 

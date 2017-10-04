@@ -14,8 +14,8 @@ public class Usuario {
 		private Integer rol;
 	//CONSTANTES
 		public final static Integer CLIENTE = 1;
-		public final static Integer ADMIN = 0;
-		public final static Integer RESTAURANTE = 2;
+		public final static Integer USUARIO = 0;
+		
 		
 		
 		

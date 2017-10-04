@@ -88,8 +88,8 @@ public class DAOTablaProductos {
 	public void addProducto(Producto Rproducto)throws SQLException, Exception{
 		String sql = "INSERT INTO PRODUCTOS VALUES (";
 		sql += Rproducto.getId() + ",'";
-		sql += Rproducto.getName()+",";
-		sql += Rproducto.getDescrip()+",";
+		sql += Rproducto.getName()+"','";
+		sql += Rproducto.getDescrip()+"',";
 		sql += Rproducto.getCosto()+",";
 		sql += Rproducto.getPrecio();
 
@@ -98,11 +98,11 @@ public class DAOTablaProductos {
 		prepStmt.executeQuery();
 
 	}
-	public void upDateUsu(Producto producto)throws SQLException, Exception{
+	public void upDateProdu(Producto producto)throws SQLException, Exception{
 		String sql = "UPDATE PRODUCTOS SET ";
 		sql += "NAME='" + producto.getName() + "',";
-		sql += "DESCRIPCION=" + producto.getDescrip()+ "',";
-		sql += "COSTO=" + producto.getCosto()+ "',";
+		sql += "DESCRIPCION='" + producto.getDescrip()+ "',";
+		sql += "COSTO=" + producto.getCosto()+ ",";
 		sql += "PRECIO=" + producto.getPrecio();
 		sql += " WHERE ID = " + producto.getId();
 
@@ -111,7 +111,7 @@ public class DAOTablaProductos {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
-	public void deleteRest(Producto producto)throws SQLException, Exception{
+	public void deleteProdu(Producto producto)throws SQLException, Exception{
 		String sql = "DELETE FROM Usuarios";
 		sql += " WHERE ID = " + producto.getId();
 
