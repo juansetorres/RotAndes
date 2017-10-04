@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import vos.*;
 import dao.*;
+import oracle.jdbc.dcn.DatabaseChangeRegistration;
 
 public class RotAndesTM {
 	/**
@@ -413,6 +414,69 @@ public class RotAndesTM {
 				throw exception;
 			}
 		}
+	}
+	public void addIngrediente(Long id ,Ingrediente ingrediente)throws Exception{
+		DAOTablaIngredientes daoIngrediente = new DAOTablaIngredientes();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoIngrediente.setConn(conn);
+			daoIngrediente.addIngrediente(ingrediente);
+			conn.commit();
+			buscarProductoPorId(id).darIngredientes().add(ingrediente);
+			
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoIngrediente.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	public Producto buscarProductoPorId(Long id) throws Exception {
+		Producto producto;
+		DAOTablaProductos daoProducto = new DAOTablaProductos();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoProducto.setConn(conn);
+			producto = daoProducto.darProducto(id);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoProducto.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return producto;
 	}
 	
 	
