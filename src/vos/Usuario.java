@@ -15,6 +15,8 @@ public class Usuario {
 	//CONSTANTES
 		public final static Integer CLIENTE = 1;
 		public final static Integer ADMIN = 0;
+		public final static Integer RESTAURANTE = 2;
+		
 		
 		
 	public Usuario(@JsonProperty(value = "id") Long pId,@JsonProperty(value = "CORREO") String pCorreo,@JsonProperty(value = "NAME") String pNombre,@JsonProperty(value = "ROL") Integer pRol){
