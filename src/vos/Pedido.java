@@ -16,6 +16,7 @@ public class Pedido {
 	private static final Integer FINALIZADO = 0;
 	private static final Integer ENCOLA = 1;
 	
+	
 	public Pedido(@JsonProperty(value="id") Long pId,@JsonProperty(value="fecha")Integer pFecha,@JsonProperty(value="cpersonas") Integer pCantidadPersonas,@JsonProperty(value="estado")Integer pEstado){
 		super();
 		idPed =pId;

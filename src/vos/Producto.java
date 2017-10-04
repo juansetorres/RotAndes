@@ -1,5 +1,7 @@
 package vos;
 
+import java.util.ArrayList;
+
 import org.codehaus.jackson.annotate.*;
 
 public class Producto {
@@ -13,6 +15,8 @@ public class Producto {
 	private String name;
 	@JsonProperty(value="descripcion")
 	private String descrip;
+	
+	private ArrayList<Ingrediente> ingredientes = new ArrayList<>();
 
 	public Producto(@JsonProperty(value="id") Long pId,@JsonProperty(value="name")String pNombre,@JsonProperty(value="descripcion")String pDescrip,@JsonProperty(value = "costo") Integer pCosto, @JsonProperty(value = "precio") Integer pPrecio){
 		super();
@@ -53,6 +57,9 @@ public class Producto {
 	}
 	public void setDescrip(String pDescrip){
 		descrip = pDescrip;
+	}
+	public ArrayList<Ingrediente> darIngredientes(){
+		return ingredientes;
 	}
 
 }
