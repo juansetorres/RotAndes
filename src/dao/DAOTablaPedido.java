@@ -6,10 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import vos.Pedido;
 
-import vos.Menu;
-
-public class DAOTablaMenu {
+public class DAOTablaPedido {
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
 	 */
@@ -20,7 +19,7 @@ public class DAOTablaMenu {
 	 */
 	private Connection conn;
 	
-	public DAOTablaMenu(){
+	public DAOTablaPedido(){
 		recursos = new ArrayList<>();
 	}
 	/**
@@ -46,69 +45,68 @@ public class DAOTablaMenu {
 	public void setConn(Connection conn) {
 		this.conn = conn;
 	}
-	public ArrayList<Menu> darMenus()throws SQLException, Exception{
-		ArrayList<Menu> menus = new ArrayList<>();
-		String sql = "SELECT * FROM MENUS";
+	public ArrayList<Pedido> darPedidos()throws SQLException, Exception{
+		ArrayList<Pedido> pedidos = new ArrayList<>();
+		String sql = "SELECT * FROM PEDIDOS";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
-		
 		while (rs.next()) {
 			Long id = rs.getLong("ID");
-			Integer costo = rs.getInt("COSTO");
-			Integer precio = rs.getInt("PRECIO");
-			menus.add(new Menu(id, costo, precio));
+			Integer fecha = rs.getInt("FECHA");
+			Integer cantPerso = rs.getInt("CPERSONAS");
+			Integer estado = rs.getInt("ESTADO");
+			pedidos.add(new Pedido(id, fecha, cantPerso, estado));
 		}
-		return menus;
+		
+		return pedidos;
 	}
-	public Menu darMenu(Long id)throws SQLException, Exception{
-		 Menu menu = null;
-		String sql = "SELECT * FROM MENUS WHERE ID="+id;
+	public Pedido darPedido(Long id)throws SQLException, Exception{
+		Pedido pedido = null;
+		String sql = "SELECT * FROM PEDIDOS WHERE ID ="+id;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
-		
 		while (rs.next()) {
 			Long id2 = rs.getLong("ID");
-			Integer costo = rs.getInt("COSTO");
-			Integer precio = rs.getInt("PRECIO");
-			menu = new Menu(id2, costo, precio);
+			Integer fecha = rs.getInt("FECHA");
+			Integer cantPerso = rs.getInt("CPERSONAS");
+			Integer estado = rs.getInt("ESTADO");
+			pedido = new Pedido(id2, fecha, cantPerso, estado);
 		}
-		return menu;
+		
+		return pedido;
 	}
-	public void addMenu(Menu menu)throws SQLException, Exception{
-		String sql = "INSERT INTO MENUS VALUES (";
-		sql += "COSTO="+menu.getCosto()+",";
-		sql += "PRECIO" + menu.getPrecio()+")";
+	public void addPedido(Pedido pedido)throws SQLException, Exception{
+		String sql = "INSERT INTO PEDIDOS VALUES (";
+		sql += "FECHA="+pedido.getFecha()+",";
+		sql += "CPERSONAS="+pedido.getCantPersonas()+",";
+		sql += "ESTADO" + pedido.getEstado()+")";
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-		
 	}
-	public void upDateMenu(Menu menu)throws SQLException, Exception{
-		String sql = "UPDATE MENUS SET ";
-		sql += "COSTO="+menu.getCosto()+",";
-		sql += "PRECIO" + menu.getPrecio();
-		sql += "WHERE ID ="+ menu.getId();
+	public void upDatePedido(Pedido pedido)throws SQLException, Exception{
+		String sql = "UPDATE PEDIDOS SET ";
+		sql += "FECHA="+pedido.getFecha()+",";
+		sql += "CPERSONAS="+pedido.getCantPersonas()+",";
+		sql += "ESTADO" + pedido.getEstado();
+		sql += "WHERE ID = "+pedido.getId();
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-		
 	}
-	public void deleteMenu(Menu menu)throws SQLException, Exception{
-		String sql = "DELETE FROM MENUS SET ";
-		sql += "WHERE ID ="+ menu.getId();
+	public void deletePedido(Pedido pedido)throws SQLException, Exception{
+		String sql = "DELETE FROM PEDIDOS SET WHERE ID ="+pedido.getId();
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-		
 	}
-	
 	
 
 }

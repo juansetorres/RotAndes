@@ -9,11 +9,19 @@ public class Pedido {
 	private Integer fecha;
 	@JsonProperty(value="cpersonas")
 	private Integer cantPersonas;
-	public Pedido(@JsonProperty(value="id") Long pId,@JsonProperty(value="fecha")Integer pFecha,@JsonProperty(value="cpersonas") Integer pCantidadPersonas){
+	@JsonProperty(value="estado")
+	private Integer estado;
+	
+	//CONSTANTES//
+	private static final Integer FINALIZADO = 0;
+	private static final Integer ENCOLA = 1;
+	
+	public Pedido(@JsonProperty(value="id") Long pId,@JsonProperty(value="fecha")Integer pFecha,@JsonProperty(value="cpersonas") Integer pCantidadPersonas,@JsonProperty(value="estado")Integer pEstado){
 		super();
 		idPed =pId;
 		fecha = pFecha;
 		cantPersonas = pCantidadPersonas;
+		estado =pEstado;
 	}
 	public void setId(Long pId){
 		idPed=pId;
@@ -32,6 +40,12 @@ public class Pedido {
 	}
 	public Long getId(){
 		return idPed;
+	}
+	public void setEstado(Integer pEstado){
+		estado = pEstado;
+	}
+	public Integer getEstado(){
+		return estado;
 	}
 
 }
