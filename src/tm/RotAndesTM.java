@@ -111,7 +111,6 @@ public class RotAndesTM {
 		return usuarios;
 		
 	}
-	////////////TRANSACCTIONS///////////
 	
 	public List<Zona> darZonas() throws Exception{
 		List<Zona> zonas;
@@ -176,6 +175,7 @@ public class RotAndesTM {
 		}
 		return productos;
 	}
+	
 	public List<Restaurante> darRestaurantes()throws Exception{
 		List<Restaurante> restaurantes;
 		DAOTablaRestaurantes daoRestaurante = new DAOTablaRestaurantes();
@@ -207,6 +207,39 @@ public class RotAndesTM {
 		}
 		return restaurantes;
 	}
+	
+	public Restaurante buscarRestaurante(Long id) throws Exception {
+		Restaurante rest;
+		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRest.setConn(conn);
+			rest = daoRest.darRestaurante(id);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRest.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return rest;
+	}
+	
 	public void addRestaurante(Restaurante rest)throws Exception{
 		DAOTablaRestaurantes daoRestaurante = new DAOTablaRestaurantes();
 		if(darRestaurantes().contains(rest)){
@@ -338,6 +371,40 @@ public class RotAndesTM {
 		} finally {
 			try {
 				daoZona.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	
+	public void addProducto(Producto prod)throws Exception{
+		DAOTablaProductos daoProd = new DAOTablaProductos();
+		if(darProductos().contains(prod)){
+			throw new Exception("ya existe el producto");
+		}
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoProd.setConn(conn);
+			daoProd.addProducto(prod);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoProd.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {

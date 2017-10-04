@@ -7,6 +7,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -14,9 +15,10 @@ import javax.ws.rs.core.Response;
 
 import tm.RotAndesTM;
 import vos.Producto;
+import vos.Restaurante;
 
-@Path("productos")
-public class ProductosServices {
+@Path("restaurantes")
+public class RestaurantesService {
 
 	/**
 	 * Atributo que usa la anotacion @Context para tener el ServletContext de la conexion actual.
@@ -39,7 +41,7 @@ public class ProductosServices {
 	
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getProductos() {
+	public Response getRestaurante() {
 		RotAndesTM tm = new RotAndesTM(getPath());
 		List<Producto> productos;
 		try {
@@ -53,13 +55,27 @@ public class ProductosServices {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addProducto(Producto prod) {
+	public Response addRestaurante(Restaurante rest) {
 		RotAndesTM tm = new RotAndesTM(getPath());
 		try {
-			tm.addProducto(prod);
+			tm.addRestaurante(rest);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(prod).build();
+		return Response.status(200).entity(rest).build();
+	}
+	
+	@GET
+	@Path( "{id: \\d+}" )
+	@Produces( { MediaType.APPLICATION_JSON } )
+	public Response getRestaurante( @PathParam( "id" ) Long id ){
+		RotAndesTM tm = new RotAndesTM( getPath( ) );
+		try{
+			Restaurante r = tm.buscarRestaurante(id);
+			return Response.status( 200 ).entity( r ).build( );			
+		}
+		catch( Exception e ){
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
 	}
 }

@@ -9,6 +9,7 @@ public class Pedido {
 	private Integer fecha;
 	@JsonProperty(value="cpersonas")
 	private Integer cantPersonas;
+	
 	public Pedido(@JsonProperty(value="id") Long pId,@JsonProperty(value="fecha")Integer pFecha,@JsonProperty(value="cpersonas") Integer pCantidadPersonas){
 		super();
 		idPed =pId;
