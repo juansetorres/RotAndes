@@ -91,7 +91,7 @@ public class DAOTablaProductos {
 		sql += Rproducto.getName()+"','";
 		sql += Rproducto.getDescrip()+"',";
 		sql += Rproducto.getCosto()+",";
-		sql += Rproducto.getPrecio();
+		sql += Rproducto.getPrecio()+")";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

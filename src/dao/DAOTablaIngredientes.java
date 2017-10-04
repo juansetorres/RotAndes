@@ -92,7 +92,7 @@ public class DAOTablaIngredientes {
 	public void addIngrediente(Ingrediente ingrediente)throws SQLException, Exception{
 		String sql = "INSERT INTO INGREDIENTES VALUES (";
 		sql += ingrediente.getId() + ",'";
-		sql += ingrediente.getName()+",'";
+		sql += ingrediente.getName()+"','";
 		sql += ingrediente.getDescrip()+"')";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);

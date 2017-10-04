@@ -113,6 +113,38 @@ public class RotAndesTM {
 		
 	}
 	
+	public Usuario buscarAdmin(Long id) throws Exception {
+		Usuario usu;
+		DAOTablaUsuario daoUsu = new DAOTablaUsuario();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoUsu.setConn(conn);
+			usu = daoUsu.darUsuario(id);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoUsu.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return usu;
+	}
+	
 	public List<Zona> darZonas() throws Exception{
 		List<Zona> zonas;
 		DAOTablaZona daoZonas = new DAOTablaZona();
@@ -209,6 +241,38 @@ public class RotAndesTM {
 		return restaurantes;
 	}
 	
+	public List<Menu> darMenus()throws Exception{
+		List<Menu> menus;
+		DAOTablaMenu daoMenu = new DAOTablaMenu();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoMenu.setConn(conn);
+			menus = daoMenu.darMenus();
+		}
+		catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoMenu.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return menus;
+	}
+	
 	public Restaurante buscarRestaurante(Long id) throws Exception {
 		Restaurante rest;
 		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
@@ -274,8 +338,13 @@ public class RotAndesTM {
 			}
 		}
 	}
-	public void addClient(Usuario cliente)throws Exception{
+	
+	public void addClient(Usuario cliente,Long id)throws Exception{
 		DAOTablaUsuario daoUsuario = new DAOTablaUsuario();
+		System.err.println(buscarAdmin(id).getRol());
+		if(buscarAdmin(id).getRol() != Usuario.ADMIN) {
+			throw new Exception("No es administrador");
+		}
 		if(cliente.getRol()!=Usuario.CLIENTE){
 			throw new Exception("No esta añadiendo un cliente");
 		}
@@ -541,6 +610,41 @@ public class RotAndesTM {
 		return productos;
 	}
 	
+	public void addMenu(Menu menu, Long id)throws Exception{
+		DAOTablaMenu daoMenu = new DAOTablaMenu();
+		Restaurante rest = buscarRestaurante(id);
+		if(darMenus().contains(menu)){
+			throw new Exception("ya existe el Menu");
+		}
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoMenu.setConn(conn);
+			rest.setMenu(menu);
+			daoMenu.addMenu(menu);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoMenu.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
 	
 	
 

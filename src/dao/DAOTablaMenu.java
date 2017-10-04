@@ -80,8 +80,9 @@ public class DAOTablaMenu {
 	}
 	public void addMenu(Menu menu)throws SQLException, Exception{
 		String sql = "INSERT INTO MENUS VALUES (";
-		sql += "COSTO="+menu.getCosto()+",";
-		sql += "PRECIO" + menu.getPrecio()+")";
+		sql += menu.getId()+",";
+		sql += menu.getCosto()+",";
+		sql += menu.getPrecio()+")";
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -91,7 +92,7 @@ public class DAOTablaMenu {
 	public void upDateMenu(Menu menu)throws SQLException, Exception{
 		String sql = "UPDATE MENUS SET ";
 		sql += "COSTO="+menu.getCosto()+",";
-		sql += "PRECIO" + menu.getPrecio();
+		sql += "PRECIO=" + menu.getPrecio();
 		sql += "WHERE ID ="+ menu.getId();
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);

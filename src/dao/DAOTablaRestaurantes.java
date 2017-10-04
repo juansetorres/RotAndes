@@ -48,7 +48,9 @@ public class DAOTablaRestaurantes {
 	
 	public ArrayList<Restaurante> darRestaurantes()throws SQLException, Exception{
 		ArrayList<Restaurante> restaurantes = new ArrayList<>();
+		
 		String sql = "SELECT * FROM RESTAURANTES";
+		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
