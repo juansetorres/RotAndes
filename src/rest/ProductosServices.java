@@ -66,7 +66,7 @@ public class ProductosServices {
 	}
 	
 	@POST
-	@Path("{id : \\d+")
+	@Path("{id : \\d}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addIngrediente(@PathParam("id") Long idProd,Ingrediente ingrediente) {
