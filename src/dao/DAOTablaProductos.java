@@ -119,5 +119,42 @@ public class DAOTablaProductos {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
+	public ArrayList<Producto> darProductosPorNombreOrdenadosPorPrecio(String nombre)throws SQLException, Exception{
+		ArrayList<Producto> productos = new ArrayList<>();
+		String sql = "SELECT * FROM PRODUCTOS WHERE NAME ='"+nombre+"' order by PRECIO";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String name = rs.getString("NAME");
+			Long id = rs.getLong("ID");
+			String descrip = rs.getString("DESCRIPCION");
+			Integer costo = rs.getInt("COSTO");
+			Integer precio = rs.getInt("PRECIO");
+			
+			productos.add(new Producto(id,name,descrip,costo,precio));
+		}
+		return productos;
+	}
+	public ArrayList<Producto> ordenerProductosPorNombre()throws SQLException, Exception{
+		ArrayList<Producto> productos = new ArrayList<>();
+		String sql = "SELECT * FROM PRODUCTOS order by NAME";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String name = rs.getString("NAME");
+			Long id = rs.getLong("ID");
+			String descrip = rs.getString("DESCRIPCION");
+			Integer costo = rs.getInt("COSTO");
+			Integer precio = rs.getInt("PRECIO");
+			
+			productos.add(new Producto(id,name,descrip,costo,precio));
+		}
+		return productos;
+	}
+	
 
 }
