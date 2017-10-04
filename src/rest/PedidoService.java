@@ -51,8 +51,14 @@ public class PedidoService {
 	@Path("{idPedido : \\d+}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Consumes({ MediaType.APPLICATION_JSON })
-	private Response addPedido(){
-		return null;
+	private Response addPedido(Pedido pedidos){
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try {
+			tm.addPedido(pedidos);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedidos).build();
 	}
 	
 
