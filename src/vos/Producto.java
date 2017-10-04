@@ -13,7 +13,8 @@ public class Producto {
 	private String name;
 	@JsonProperty(value="descripcion")
 	private String descrip;
-	public Producto(@JsonProperty(value="id") Long pId,@JsonProperty(value="name")String pNombre,@JsonProperty(value="DESCRIPCION")String pDescrip,@JsonProperty(value = "costo") Integer pCosto, @JsonProperty(value = "precio") Integer pPrecio){
+
+	public Producto(@JsonProperty(value="id") Long pId,@JsonProperty(value="name")String pNombre,@JsonProperty(value="descripcion")String pDescrip,@JsonProperty(value = "costo") Integer pCosto, @JsonProperty(value = "precio") Integer pPrecio){
 		super();
 		idPro=pId;
 		name = pNombre;

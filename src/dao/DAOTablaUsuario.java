@@ -62,6 +62,7 @@ public class DAOTablaUsuario {
 		}
 		return usuarios;
 	}
+	
 	public Usuario darUsuario(Long id)throws SQLException, Exception{
 		Usuario usuario = null;
 
@@ -85,9 +86,9 @@ public class DAOTablaUsuario {
 	public void addUsuario(Usuario Rusuario)throws SQLException, Exception{
 		String sql = "INSERT INTO USUARIOS VALUES (";
 		sql += Rusuario.getId() + ",'";
-		sql += Rusuario.getCorreo()+",'";
-		sql += Rusuario.getName()+"',";
-		sql += Rusuario.getRol();
+		sql += Rusuario.getName()+"','";
+		sql += Rusuario.getCorreo()+"',";
+		sql += Rusuario.getRol()+ ")";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

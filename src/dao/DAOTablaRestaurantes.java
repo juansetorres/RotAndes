@@ -85,7 +85,7 @@ public class DAOTablaRestaurantes {
 		String sql = "INSERT INTO RESTAURANTES VALUES (";
 		sql += restaurante.getId() + ",'";
 		sql += restaurante.getTipoComida()+"','";
-		sql += restaurante.getPaginaWeb()+"'";
+		sql += restaurante.getPaginaWeb()+"')";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

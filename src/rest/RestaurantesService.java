@@ -7,17 +7,18 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotAndesTM;
-import vos.Usuario;
+import vos.Producto;
+import vos.Restaurante;
 
-
-@Path("usuarios")
-public class UsuariosServices {
+@Path("restaurantes")
+public class RestaurantesService {
 
 	/**
 	 * Atributo que usa la anotacion @Context para tener el ServletContext de la conexion actual.
@@ -40,41 +41,41 @@ public class UsuariosServices {
 	
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getUsuarios() {
+	public Response getRestaurante() {
 		RotAndesTM tm = new RotAndesTM(getPath());
-		List<Usuario> ususarios;
+		List<Producto> productos;
 		try {
-			ususarios = tm.darUsuarios();
+			productos = tm.darProductos();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(ususarios).build();
+		return Response.status(200).entity(productos).build();
 	}
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addCliente(Usuario usu) {
+	public Response addRestaurante(Restaurante rest) {
 		RotAndesTM tm = new RotAndesTM(getPath());
 		try {
-			tm.addClient(usu);
+			tm.addRestaurante(rest);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(usu).build();
+		return Response.status(200).entity(rest).build();
 	}
 	
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response addAdmin(Usuario usu) {
-		RotAndesTM tm = new RotAndesTM(getPath());
-		try {
-			tm.addUsuario(usu);
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
+	@GET
+	@Path( "{id: \\d+}" )
+	@Produces( { MediaType.APPLICATION_JSON } )
+	public Response getRestaurante( @PathParam( "id" ) Long id ){
+		RotAndesTM tm = new RotAndesTM( getPath( ) );
+		try{
+			Restaurante r = tm.buscarRestaurante(id);
+			return Response.status( 200 ).entity( r ).build( );			
 		}
-		return Response.status(200).entity(usu).build();
+		catch( Exception e ){
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
 	}
-	
 }
