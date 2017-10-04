@@ -56,8 +56,9 @@ public class DAOTablaUsuario {
 			String name = rs.getString("NAME");
 			Long id = rs.getLong("ID");
 			String correo = rs.getString("CORREO");
+			Integer rol = rs.getInt("ROL");
 			
-			usuarios.add(new Usuario(id,correo,name));
+			usuarios.add(new Usuario(id,correo,name,rol));
 		}
 		return usuarios;
 	}
@@ -74,7 +75,8 @@ public class DAOTablaUsuario {
 			String name = rs.getString("NAME");
 			Long id2 = rs.getLong("ID");
 			String correo = rs.getString("CORREO");
-			usuario = new Usuario(id2,correo,name);
+			Integer rol = rs.getInt("ROL");
+			usuario = new Usuario(id2,correo,name,rol);
 		}
 
 		return usuario;
@@ -94,7 +96,8 @@ public class DAOTablaUsuario {
 	public void upDateUsu(Usuario usuario)throws SQLException, Exception{
 		String sql = "UPDATE USUARIOS SET ";
 		sql += "NAME='" + usuario.getName() + "',";
-		sql += "CORREO=" + usuario.getCorreo();
+		sql += "CORREO=" + usuario.getCorreo()+"',";
+		sql += "ROL="+ usuario.getRol();
 		sql += " WHERE ID = " + usuario.getId();
 
 

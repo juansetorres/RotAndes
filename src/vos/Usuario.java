@@ -10,12 +10,19 @@ public class Usuario {
 		private String correo;
 		@JsonProperty(value = "NAME")
 		private String name;
+		@JsonProperty(value = "ROL")
+		private Integer rol;
+	//CONSTANTES
+		public final static Integer CLIENTE = 1;
+		public final static Integer ADMIN = 0;
 		
-	public Usuario(@JsonProperty(value = "id") Long pId,@JsonProperty(value = "CORREO") String pCorreo,@JsonProperty(value = "NAME") String pNombre){
+		
+	public Usuario(@JsonProperty(value = "id") Long pId,@JsonProperty(value = "CORREO") String pCorreo,@JsonProperty(value = "NAME") String pNombre,@JsonProperty(value = "ROL") Integer pRol){
 			super();
 			idUsu = pId;
 			name =pNombre;
 			correo = pCorreo;
+			rol = pRol;
 	}
 		
 	public String getName(){
@@ -36,6 +43,12 @@ public class Usuario {
 	}
 	public void setId(){
 			
+	}
+	public void setCliente(Integer pRol){
+		rol = pRol;
+	}
+	public Integer getRol(){
+		return rol;
 	}
 
 }

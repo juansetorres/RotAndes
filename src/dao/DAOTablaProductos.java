@@ -91,7 +91,7 @@ public class DAOTablaProductos {
 		sql += Rproducto.getName()+",";
 		sql += Rproducto.getDescrip()+",";
 		sql += Rproducto.getCosto()+",";
-		sql += Rproducto.getPrecio()+",";
+		sql += Rproducto.getPrecio();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -101,8 +101,8 @@ public class DAOTablaProductos {
 	public void upDateUsu(Producto producto)throws SQLException, Exception{
 		String sql = "UPDATE PRODUCTOS SET ";
 		sql += "NAME='" + producto.getName() + "',";
-		sql += "DESCRIPCION=" + producto.getDescrip();
-		sql += "COSTO=" + producto.getCosto();
+		sql += "DESCRIPCION=" + producto.getDescrip()+ "',";
+		sql += "COSTO=" + producto.getCosto()+ "',";
 		sql += "PRECIO=" + producto.getPrecio();
 		sql += " WHERE ID = " + producto.getId();
 
