@@ -710,6 +710,69 @@ public class RotAndesTM {
 		}
 		
 	}
+	public Pedido buscarPedido(Long id) throws Exception {
+		Pedido pedido;
+		DAOTablaPedido daoPedido = new DAOTablaPedido();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoPedido.setConn(conn);
+			pedido = daoPedido.darPedido(id);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPedido.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return pedido;
+		
+	}
+	public void finalizaPedido(Pedido pedidos) throws Exception{
+		DAOTablaPedido daoPedido = new DAOTablaPedido();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoPedido.setConn(conn);
+			daoPedido.upDatePedido(pedidos);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPedido.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
 	
 	
 
