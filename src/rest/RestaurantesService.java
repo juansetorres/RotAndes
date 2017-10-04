@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotAndesTM;
-import vos.Producto;
+import vos.Menu;
 import vos.Restaurante;
 
 @Path("restaurantes")
@@ -43,13 +43,27 @@ public class RestaurantesService {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getRestaurante() {
 		RotAndesTM tm = new RotAndesTM(getPath());
-		List<Producto> productos;
+		List<Restaurante> rest;
 		try {
-			productos = tm.darProductos();
+			rest = tm.darRestaurantes();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(productos).build();
+		return Response.status(200).entity(rest).build();
+	}
+	
+	@POST
+	@Path( "{id: \\d+}" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addMenu(@PathParam( "id" ) Long id , Menu menu){
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try {
+			tm.addMenu(menu, id);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(menu).build();
 	}
 	
 	@POST
@@ -65,6 +79,7 @@ public class RestaurantesService {
 		return Response.status(200).entity(rest).build();
 	}
 	
+	
 	@GET
 	@Path( "{id: \\d+}" )
 	@Produces( { MediaType.APPLICATION_JSON } )
@@ -78,4 +93,6 @@ public class RestaurantesService {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
+	
+	
 }

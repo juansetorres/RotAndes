@@ -7,6 +7,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -52,12 +53,13 @@ public class UsuariosServices {
 	}
 	
 	@POST
+	@Path( "{id: \\d+}" )
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addCliente(Usuario usu) {
+	public Response addCliente(@PathParam( "id" ) Long id ,Usuario usu) {
 		RotAndesTM tm = new RotAndesTM(getPath());
 		try {
-			tm.addClient(usu);
+			tm.addClient(usu,id);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
