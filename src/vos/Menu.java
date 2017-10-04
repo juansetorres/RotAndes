@@ -4,12 +4,12 @@ import org.codehaus.jackson.annotate.*;
 public class Menu {
 	@JsonProperty(value="id")
 	private Long idMenu;
-	@JsonProperty(value = "COSTO")
+	@JsonProperty(value = "costo")
 	private Integer costo;
-	@JsonProperty(value = "PRECIO")
+	@JsonProperty(value = "precio")
 	private Integer precio;
 	
-	public Menu(@JsonProperty(value ="id")Long pId,@JsonProperty(value = "COSTO")Integer pCosto,@JsonProperty(value = "PRECIO")Integer pPrecio){
+	public Menu(@JsonProperty(value ="id")Long pId,@JsonProperty(value = "costo")Integer pCosto,@JsonProperty(value = "precio")Integer pPrecio){
 		super();
 		idMenu = pId;
 		costo = pCosto;

@@ -4,12 +4,12 @@ import org.codehaus.jackson.annotate.*;
 public class Ingrediente {
 	@JsonProperty(value="id")
 	private Long idIngre;
-	@JsonProperty(value="NAME")
+	@JsonProperty(value="name")
 	private String name;
-	@JsonProperty(value="DESCRIPCION")
+	@JsonProperty(value="descripcion")
 	private String descrip;
 	
-	public Ingrediente(@JsonProperty(value="id")Long pId,@JsonProperty(value="TIPOCOMIDA") String pName,@JsonProperty(value="PAGINAWEB")String pDescrip){
+	public Ingrediente(@JsonProperty(value="id")Long pId,@JsonProperty(value="name") String pName,@JsonProperty(value="descripcion")String pDescrip){
 		super();
 		idIngre =pId;
 		name = pName;

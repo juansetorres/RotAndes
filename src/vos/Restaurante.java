@@ -6,13 +6,13 @@ public class Restaurante {
 	//Atributos
 		@JsonProperty(value="id")
 		private Long idRest;
-		@JsonProperty(value="TIPOCOMIDA")
+		@JsonProperty(value="tipocomida")
 		private String tipoComida;
-		@JsonProperty(value="PAGINAWEB")
+		@JsonProperty(value="paginaweb")
 		private String paginaWeb;
 	
 	
-	public Restaurante(@JsonProperty(value="id")Long idR,@JsonProperty(value="TIPOCOMIDA") String tipoComidaR,@JsonProperty(value="PAGINAWEB")String paginaWebR){
+	public Restaurante(@JsonProperty(value="id")Long idR,@JsonProperty(value="tipocomida") String tipoComidaR,@JsonProperty(value="paginaweb")String paginaWebR){
 		super();
 		idRest = idR;
 		tipoComida = tipoComidaR;

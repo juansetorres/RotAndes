@@ -6,11 +6,11 @@ public class Usuario {
 	//Atributos
 		@JsonProperty(value="id")
 		private Long idUsu;
-		@JsonProperty(value = "CORREO")
+		@JsonProperty(value = "correo")
 		private String correo;
-		@JsonProperty(value = "NAME")
+		@JsonProperty(value = "name")
 		private String name;
-		@JsonProperty(value = "ROL")
+		@JsonProperty(value = "rol")
 		private Integer rol;
 	//CONSTANTES
 		public final static Integer CLIENTE = 1;
@@ -19,7 +19,7 @@ public class Usuario {
 		
 		
 		
-	public Usuario(@JsonProperty(value = "id") Long pId,@JsonProperty(value = "CORREO") String pCorreo,@JsonProperty(value = "NAME") String pNombre,@JsonProperty(value = "ROL") Integer pRol){
+	public Usuario(@JsonProperty(value = "id") Long pId,@JsonProperty(value = "correo") String pCorreo,@JsonProperty(value = "name") String pNombre,@JsonProperty(value = "rol") Integer pRol){
 			super();
 			idUsu = pId;
 			name =pNombre;

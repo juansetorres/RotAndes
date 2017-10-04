@@ -6,14 +6,14 @@ public class Zona {
 	@JsonProperty(value="id")
 	private Long idZone;
 	
-	@JsonProperty(value = "CAPACIDAD")
+	@JsonProperty(value = "capacidad")
 	private Integer capacidad;
 	
-	@JsonProperty(value = "NAME")
+	@JsonProperty(value = "name")
 	private String name;
 	
 	
-	public Zona(@JsonProperty(value="id") Long pId, @JsonProperty(value = "CAPACIDAD") Integer pCapacidad, @JsonProperty(value = "NAME") String pName){
+	public Zona(@JsonProperty(value="id") Long pId, @JsonProperty(value = "capacidad") Integer pCapacidad, @JsonProperty(value = "name") String pName){
 		super();
 		idZone = pId;
 		capacidad = pCapacidad;

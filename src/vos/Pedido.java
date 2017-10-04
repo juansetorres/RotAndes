@@ -5,11 +5,11 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class Pedido {
 	@JsonProperty(value="id")
 	private Long idPed;
-	@JsonProperty(value="FECHA")
+	@JsonProperty(value="fecha")
 	private Integer fecha;
-	@JsonProperty(value="CPERSONAS")
+	@JsonProperty(value="cpersonas")
 	private Integer cantPersonas;
-	public Pedido(@JsonProperty(value="id") Long pId,@JsonProperty(value="FECHA")Integer pFecha,@JsonProperty(value="CPERSONAS") Integer pCantidadPersonas){
+	public Pedido(@JsonProperty(value="id") Long pId,@JsonProperty(value="fecha")Integer pFecha,@JsonProperty(value="cpersonas") Integer pCantidadPersonas){
 		super();
 		idPed =pId;
 		fecha = pFecha;
