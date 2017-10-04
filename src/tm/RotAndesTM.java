@@ -4,8 +4,6 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -113,6 +111,8 @@ public class RotAndesTM {
 		return usuarios;
 		
 	}
+	////////////TRANSACCTIONS///////////
+	
 	public List<Zona> darZonas() throws Exception{
 		List<Zona> zonas;
 		DAOTablaZona daoZonas = new DAOTablaZona();
@@ -279,7 +279,7 @@ public class RotAndesTM {
 	}
 	public void addUsuario(Usuario pUsuario)throws Exception{
 		DAOTablaUsuario daoUsuario = new DAOTablaUsuario();
-		if(pUsuario.getRol()!=Usuario.USUARIO){
+		if(pUsuario.getRol()!=Usuario.ADMIN){
 			throw new Exception("No esta añadiendo un usuario");
 		}
 		if(darUsuarios().contains(pUsuario)){
@@ -346,9 +346,6 @@ public class RotAndesTM {
 				throw exception;
 			}
 		}
-		
-		
-		
 	}
 	
 	

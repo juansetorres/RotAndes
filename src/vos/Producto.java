@@ -5,15 +5,16 @@ import org.codehaus.jackson.annotate.*;
 public class Producto {
 	@JsonProperty(value="id")
 	private Long idPro;
-	@JsonProperty(value = "COSTO")
+	@JsonProperty(value = "costo")
 	private Integer costo;
-	@JsonProperty(value = "PRECIO")
+	@JsonProperty(value = "precio")
 	private Integer precio;
-	@JsonProperty(value="NAME")
+	@JsonProperty(value="name")
 	private String name;
-	@JsonProperty(value="DESCRIPCION")
+	@JsonProperty(value="descripcion")
 	private String descrip;
-	public Producto(@JsonProperty(value="id") Long pId,@JsonProperty(value="NAME")String pNombre,@JsonProperty(value="DESCRIPCION")String pDescrip,@JsonProperty(value = "COSTO") Integer pCosto, @JsonProperty(value = "PRECIO") Integer pPrecio){
+	
+	public Producto(@JsonProperty(value="id") Long pId,@JsonProperty(value="name")String pNombre,@JsonProperty(value="descripcion")String pDescrip,@JsonProperty(value = "costo") Integer pCosto, @JsonProperty(value = "precio") Integer pPrecio){
 		super();
 		idPro=pId;
 		name = pNombre;
