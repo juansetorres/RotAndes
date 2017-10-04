@@ -99,6 +99,15 @@ public class DAOTablaMenu {
 		prepStmt.executeQuery();
 		
 	}
+	public void deleteMenu(Menu menu)throws SQLException, Exception{
+		String sql = "DELETE FROM MENUS SET ";
+		sql += "WHERE ID ="+ menu.getId();
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+		
+	}
 	
 	
 
