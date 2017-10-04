@@ -112,7 +112,7 @@ public class DAOTablaProductos {
 		prepStmt.executeQuery();
 	}
 	public void deleteProdu(Producto producto)throws SQLException, Exception{
-		String sql = "DELETE FROM Usuarios";
+		String sql = "DELETE FROM PRODUCTOS";
 		sql += " WHERE ID = " + producto.getId();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
