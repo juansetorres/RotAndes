@@ -902,7 +902,69 @@ public class RotAndesTM {
 		return producto;
 		
 	}
-	
+	public void addPreferencia(Long id,Prefieren prefe)throws Exception{
+		DAOTablaPrefieren daoPrefiren = new DAOTablaPrefieren();
+		if(prefe.getIdusu()!=id){
+			throw new Exception("no puedes postear la preferencia de otro cliente");
+		}
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoPrefiren.setConn(conn);
+			daoPrefiren.addPrefieren(prefe);
+			conn.commit();
+			
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPrefiren.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	public void upDatePrefieren(Long id,Prefieren prefieren) throws Exception {
+		DAOTablaPrefieren daoPrefieren = new DAOTablaPrefieren();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoPrefieren.setConn(conn);
+			daoPrefieren.upDatePedido(prefieren);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPrefieren.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
 	
 
 }
