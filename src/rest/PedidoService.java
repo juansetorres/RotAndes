@@ -60,6 +60,19 @@ public class PedidoService {
 		}
 		return Response.status(200).entity(pedidos).build();
 	}
+	@PUT
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	private Response  finalizarPedido(Pedido pedidos){
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try {
+			tm.finalizaPedido(pedidos);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedidos).build();
+		
+	}
 	
 
 }

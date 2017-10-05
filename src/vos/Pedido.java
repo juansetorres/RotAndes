@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-import vos.Producto;
 
 public class Pedido {
 	@JsonProperty(value="id")
@@ -17,7 +16,8 @@ public class Pedido {
 	@JsonProperty(value="estado")
 	private Integer estado;
 	
-	private ArrayList<Producto> productos = new ArrayList<>(); 
+	private ArrayList<Sirven> productos = new ArrayList<>();
+	
 	
 	//CONSTANTES//
 	private static final Integer FINALIZADO = 0;
@@ -55,7 +55,7 @@ public class Pedido {
 	public Integer getEstado(){
 		return estado;
 	}
-	public ArrayList<Producto> getProd(){
+	public ArrayList<Sirven> getProd(){
 		return productos;
 	}
 
