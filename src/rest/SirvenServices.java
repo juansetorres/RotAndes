@@ -1,5 +1,8 @@
 package rest;
 
+import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -35,7 +38,7 @@ public class SirvenServices {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response darMasVendido(){
 		RotAndesTM tm = new RotAndesTM(getPath());
-		Producto producto;
+		ArrayList<Producto> producto = new ArrayList<>();
 		try {
 			producto = tm.darMasServido();
 		} catch (Exception e) {

@@ -4,8 +4,11 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
 
 import vos.*;
 import dao.*;
@@ -837,16 +840,17 @@ public class RotAndesTM {
 		}
 		return sirven;
 	}
-	public Producto darMasServido()throws Exception{
-		Producto producto;
+	public ArrayList<Producto> darMasServido()throws Exception{
+		ArrayList<Producto> producto = new ArrayList<>();
+		ArrayList<Sirven> sirven = new ArrayList<>();
 		DAOTablaSirven daoSirven = new DAOTablaSirven();
+		DAOTablaProductos daoProducto = new DAOTablaProductos();
 		try 
 		{
 			//////transaccion
 			this.conn = darConexion();
-			producto = buscarProductoPorId(daoSirven.darMasServidos().getIdProducto());
 			daoSirven.setConn(conn);
-			;
+			sirven = daoSirven.darMasServidos();
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -859,6 +863,34 @@ public class RotAndesTM {
 		} finally {
 			try {
 				daoSirven.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoProducto.setConn(conn);
+			for(Sirven x : sirven){
+				producto.add(buscarProductoPorId(x.getIdProducto()));
+			}
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoProducto.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {

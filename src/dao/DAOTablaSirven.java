@@ -56,8 +56,10 @@ public class DAOTablaSirven {
 		while (rs.next()) {
 			Long idR = rs.getLong("IDRESTAURANTE");
 			Long idP = rs.getLong("IDPRODUCTO");
+			Long id = rs.getLong("ID");
+			Long idM = rs.getLong("IDMENU");
 			Integer cant = rs.getInt("CANTIDAD");
-			sirven.add(new Sirven(idR, idP, cant));
+			sirven.add(new Sirven(idR, idP, cant,id,idM));
 			
 			
 		}
@@ -74,8 +76,10 @@ public class DAOTablaSirven {
 		if (rs.next()) {
 			Long idR = rs.getLong("IDRESTAURANTE");
 			Long idP = rs.getLong("IDPRODUCTO");
+			Long id = rs.getLong("ID");
+			Long idM = rs.getLong("IDMENU");
 			Integer cant = rs.getInt("CANTIDAD");
-			sirven = new Sirven(idR, idP, cant);
+			sirven = new Sirven(idR, idP, cant,id,idM);
 			
 			
 		}
@@ -112,18 +116,20 @@ public class DAOTablaSirven {
 		prepStmt.executeQuery();
 		
 	}
-	public Sirven darMasServidos()throws SQLException, Exception{
-		Sirven sirven = null;
-		String sql = "SELECT IDPRODUCTO,MAX(SELECT count(IDPRODUCTO) FROM SIRVEN group by IDPRODUCTO) as CANTMAX FROM SIRVEN group by IDPRODUCTO ";
+	public ArrayList<Sirven> darMasServidos()throws SQLException, Exception{
+		ArrayList<Sirven> sirven = new ArrayList<>();
+		String sql = "SELECT IDPRODUCTO,MAX(SELECT count(IDMENU) FROM SIRVEN group by IDPRODUCTO) as CANTMAX FROM SIRVEN group by IDPRODUCTO ";
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
-		if (rs.next()) {
+		while (rs.next()) {
 			Long idR = rs.getLong("IDRESTAURANTE");
 			Long idP = rs.getLong("IDPRODUCTO");
+			Long id = rs.getLong("ID");
+			Long idM = rs.getLong("IDMENU");
 			Integer cant = rs.getInt("CANTIDAD");
-			sirven = new Sirven(idR, idP, cant);
+			sirven .add( new Sirven(idR, idP, cant,id,idM));
 			
 			
 		}
