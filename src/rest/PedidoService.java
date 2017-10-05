@@ -2,7 +2,6 @@ package rest;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -48,7 +47,6 @@ public class PedidoService {
 		return Response.status(200).entity(idPedido).build();
 	}
 	@POST
-	@Path("{idPedido : \\d+}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Consumes({ MediaType.APPLICATION_JSON })
 	private Response addPedido(Pedido pedidos){

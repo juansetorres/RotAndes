@@ -1,7 +1,6 @@
 package rest;
 
 import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;

@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.Restaurante;
+
 import vos.Zona;
 
 public class DAOTablaZona {

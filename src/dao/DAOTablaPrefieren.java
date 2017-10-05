@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.Pedido;
+
 import vos.Prefieren;
 
 public class DAOTablaPrefieren {

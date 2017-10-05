@@ -83,7 +83,7 @@ public class UsuariosServices {
 		return Response.status(200).entity(usu).build();
 	}
 	@POST
-	@Path( "{id: \\d+/prefieren}" )
+	@Path( "{id: \\d+}/prefieren" )
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addPrefe(@PathParam( "id" ) Long id ,Prefieren prefieren) {
@@ -96,7 +96,7 @@ public class UsuariosServices {
 		return Response.status(200).entity(prefieren).build();
 	}
 	@PUT
-	@Path( "{id: \\d+/prefieren}" )
+	@Path( "{id: \\d+}/prefieren" )
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response upDatePrefieren(@PathParam( "id" ) Long id ,Prefieren prefieren) {
