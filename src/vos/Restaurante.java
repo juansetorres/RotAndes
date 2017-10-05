@@ -8,6 +8,10 @@ public class Restaurante {
 	//Atributos
 	@JsonProperty(value="id")
 	private Long idRest;
+	@JsonProperty(value="name")
+	private String name;
+
+
 	@JsonProperty(value="tipoComida")
 	private String tipoComida;
 	@JsonProperty(value="paginaWeb")
@@ -15,13 +19,21 @@ public class Restaurante {
 
 	private Menu menu;
 
-	public Restaurante(@JsonProperty(value="id")Long idR,@JsonProperty(value="tipoComida") String tipoComidaR,@JsonProperty(value="paginaWeb")String paginaWebR){
+	public Restaurante(@JsonProperty(value="id")Long idR, @JsonProperty(value="name") String pName, @JsonProperty(value="tipoComida") String tipoComidaR,@JsonProperty(value="paginaWeb")String paginaWebR){
 		super();
 		idRest = idR;
 		tipoComida = tipoComidaR;
 		paginaWeb = paginaWebR;
+		name = pName;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getTipoComida(){
 		return tipoComida;
 	}

@@ -14,7 +14,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotAndesTM;
+import vos.Restaurante;
 import vos.Usuario;
+import vos.Zona;
 
 
 @Path("usuarios")
@@ -79,4 +81,31 @@ public class UsuariosServices {
 		return Response.status(200).entity(usu).build();
 	}
 	
+	@POST
+	@Path( "{id: \\d+}/restaurantes" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addRestaurante(Restaurante rest) {
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try {
+			tm.addRestaurante(rest);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(rest).build();
+	}
+	
+	@POST
+	@Path( "{id: \\d+}/zonas" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addZona(Zona zona) {
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try {
+			tm.addZona(zona);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(zona).build();
+	}
 }

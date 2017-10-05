@@ -53,19 +53,6 @@ public class ProductosServices {
 	}
 	
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response addProducto(Producto prod) {
-		RotAndesTM tm = new RotAndesTM(getPath());
-		try {
-			tm.addProducto(prod);
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
-		return Response.status(200).entity(prod).build();
-	}
-	
-	@POST
 	@Path("{id : \\d+}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -78,6 +65,7 @@ public class ProductosServices {
 		}
 		return Response.status(200).entity(ingrediente).build();
 	}
+	
 	@GET
 	@Path("{quieroEsto/nombre : \\d+}")
 	@Produces(MediaType.APPLICATION_JSON)

@@ -14,7 +14,7 @@ public class Producto {
 	@JsonProperty(value="name")
 	private String name;
 	@JsonProperty(value="descripcion")
-	private String descrip;
+	private String descripcion;
 	
 	private ArrayList<Ingrediente> ingredientes = new ArrayList<>();
 
@@ -22,7 +22,7 @@ public class Producto {
 		super();
 		idPro=pId;
 		name = pNombre;
-		descrip=pDescrip;
+		descripcion=pDescrip;
 		costo=pCosto;
 		precio = pPrecio;
 	}
@@ -49,14 +49,14 @@ public class Producto {
 		return name;
 	}
 	public String getDescrip(){
-		return descrip;
+		return descripcion;
 	}
 	
 	public void setName(String pName){
 		name = pName;
 	}
 	public void setDescrip(String pDescrip){
-		descrip = pDescrip;
+		descripcion = pDescrip;
 	}
 	public ArrayList<Ingrediente> darIngredientes(){
 		return ingredientes;

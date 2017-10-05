@@ -13,10 +13,10 @@ public class Sirven {
 	/**
 	 * cantidad en bodega
 	 */
-	@JsonProperty("CANT")
+	@JsonProperty("cantidad")
 	private Integer cantidad;
 	
-	public Sirven(@JsonProperty("idProducto") Long pId,@JsonProperty("idRestaurante") Long rId,@JsonProperty("CANT")Integer pCant,@JsonProperty("id") Long pIdSirven,@JsonProperty("idMenu") Long pIdMenu){
+	public Sirven(@JsonProperty("idProducto") Long pId,@JsonProperty("idRestaurante") Long rId,@JsonProperty("cantidad")Integer pCant,@JsonProperty("id") Long pIdSirven,@JsonProperty("idMenu") Long pIdMenu){
 		super();
 		id = pIdSirven;
 		idProdu = pId;

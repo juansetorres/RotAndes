@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import tm.RotAndesTM;
 import vos.Menu;
+import vos.Producto;
 import vos.Restaurante;
 
 @Path("restaurantes")
@@ -53,7 +54,7 @@ public class RestaurantesService {
 	}
 	
 	@POST
-	@Path( "{id: \\d+}" )
+	@Path( "{id: \\d+}/menus" )
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addMenu(@PathParam( "id" ) Long id , Menu menu){
@@ -67,19 +68,19 @@ public class RestaurantesService {
 	}
 	
 	@POST
+	@Path( "{id: \\d+}/productos" )
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addRestaurante(Restaurante rest) {
+	public Response addProducto(Producto prod) {
 		RotAndesTM tm = new RotAndesTM(getPath());
 		try {
-			tm.addRestaurante(rest);
+			tm.addProducto(prod);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(rest).build();
+		return Response.status(200).entity(prod).build();
 	}
-	
-	
+
 	@GET
 	@Path( "{id: \\d+}" )
 	@Produces( { MediaType.APPLICATION_JSON } )

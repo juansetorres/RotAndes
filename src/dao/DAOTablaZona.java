@@ -96,8 +96,8 @@ public class DAOTablaZona {
 	public void addZona(Zona zona)throws SQLException, Exception{
 		String sql = "INSERT INTO ZONAS VALUES (";
 		sql += zona.getId() + ",'";
-		sql += zona.getName() + ",";
-		sql += zona.getCap() + ",";
+		sql += zona.getName() + "',";
+		sql += zona.getCap() + ")";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
