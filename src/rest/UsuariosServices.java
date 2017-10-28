@@ -6,7 +6,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -15,8 +15,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotAndesTM;
-import vos.Restaurante;
+import vos.Pedido;
 import vos.Prefieren;
+import vos.Restaurante;
 import vos.Usuario;
 import vos.Zona;
 
@@ -37,14 +38,14 @@ public class UsuariosServices {
 	private String getPath() {
 		return context.getRealPath("WEB-INF/ConnectionData");
 	}
-	
-	
+
+
 	private String doErrorMessage(Exception e){
 		return "{ \"ERROR\": \""+ e.getMessage() + "\"}" ;
 	}
-	
+
 	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
+	@Produces(MediaType.APPLICATION_JSON )
 	public Response getUsuarios() {
 		RotAndesTM tm = new RotAndesTM(getPath());
 		List<Usuario> ususarios;
@@ -55,7 +56,7 @@ public class UsuariosServices {
 		}
 		return Response.status(200).entity(ususarios).build();
 	}
-	
+
 	@POST
 	@Path( "{id: \\d+}" )
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -69,7 +70,7 @@ public class UsuariosServices {
 		}
 		return Response.status(200).entity(usu).build();
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -82,34 +83,7 @@ public class UsuariosServices {
 		}
 		return Response.status(200).entity(usu).build();
 	}
-	@POST
-	@Path( "{id: \\d+}/prefieren" )
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response addPrefe(@PathParam( "id" ) Long id ,Prefieren prefieren) {
-		RotAndesTM tm = new RotAndesTM(getPath());
-		try {
-			tm.addPreferencia(id, prefieren);;
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
-		return Response.status(200).entity(prefieren).build();
-	}
-	@PUT
-	@Path( "{id: \\d+}/prefieren" )
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response upDatePrefieren(@PathParam( "id" ) Long id ,Prefieren prefieren) {
-		RotAndesTM tm = new RotAndesTM(getPath());
-		try {
-			tm.upDatePrefieren(id, prefieren);
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
-		return Response.status(200).entity(prefieren).build();
-	}
-	
-	
+
 	@POST
 	@Path( "{id: \\d+}/restaurantes" )
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -123,7 +97,7 @@ public class UsuariosServices {
 		}
 		return Response.status(200).entity(rest).build();
 	}
-	
+
 	@POST
 	@Path( "{id: \\d+}/zonas" )
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -136,5 +110,33 @@ public class UsuariosServices {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(zona).build();
+	}
+
+	@POST
+	@Path( "{id: \\d+}/productos/{id: \\d+}" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addPedidoPlato(Pedido pedido,  @PathParam( "id" ) Long idProd) {
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try {
+			tm.addPedidoProducto(pedido, idProd);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedido).build();
+	}
+
+	@POST
+	@Path( "{id: \\d+}/prefieren" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addPreferencia(@PathParam( "id" ) Long id ,Prefieren prefieren) {
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try {
+			tm.addPreferencia(id, prefieren);;
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(prefieren).build();
 	}
 }

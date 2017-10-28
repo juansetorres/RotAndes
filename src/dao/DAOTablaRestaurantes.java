@@ -9,6 +9,7 @@ import vos.Restaurante;
 
 
 public class DAOTablaRestaurantes {
+
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
 	 */
@@ -19,11 +20,11 @@ public class DAOTablaRestaurantes {
 	 */
 	private Connection conn;
 
-	
+
 	public DAOTablaRestaurantes(){
 		recursos = new ArrayList<>();
 	}
-	
+
 	/**
 	 * Metodo que cierra todos los recursos que estan enel arreglo de recursos
 	 * <b>post: </b> Todos los recurso del arreglo de recursos han sido cerrados
@@ -45,12 +46,12 @@ public class DAOTablaRestaurantes {
 	public void setConn(Connection con){
 		this.conn = con;
 	}
-	
+
 	public ArrayList<Restaurante> darRestaurantes()throws SQLException, Exception{
 		ArrayList<Restaurante> restaurantes = new ArrayList<>();
-		
+
 		String sql = "SELECT * FROM RESTAURANTES";
-		
+
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
@@ -83,7 +84,7 @@ public class DAOTablaRestaurantes {
 
 		return video;
 	}
-	
+
 	public void addRestaurante(Restaurante restaurante)throws SQLException, Exception{
 		String sql = "INSERT INTO RESTAURANTES VALUES (";
 		sql += restaurante.getId() + ",'";

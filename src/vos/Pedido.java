@@ -1,62 +1,109 @@
 package vos;
 
-import java.util.ArrayList;
-
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
 public class Pedido {
-	@JsonProperty(value="id")
-	private Long idPed;
+	
+	@JsonProperty(value="numPedido")
+	private Long numPedido;
+	
+	@JsonProperty(value="precio")
+	private double precio;
+	
 	@JsonProperty(value="fecha")
-	private Integer fecha;
-	@JsonProperty(value="cpersonas")
-	private Integer cantPersonas;
-	@JsonProperty(value="estado")
-	private Integer estado;
+	private String fecha;
 	
-	private ArrayList<Sirven> productos = new ArrayList<>();
+	@JsonProperty(value="correo")
+	private String emailUser;
 	
+	@JsonProperty(value="pagado")
+	private int pagado;
 	
-	//CONSTANTES//
-	private static final Integer FINALIZADO = 0;
-	private static final Integer ENCOLA = 1;
+	@JsonProperty(value="entregado")
+	private int entregado;
 	
-	
-	public Pedido(@JsonProperty(value="id") Long pId,@JsonProperty(value="fecha")Integer pFecha,@JsonProperty(value="cpersonas") Integer pCantidadPersonas,@JsonProperty(value="estado")Integer pEstado){
+	@JsonProperty(value="hora")
+	private String hora;
+
+	@JsonProperty(value="cambios")
+	private String cambios;
+
+	public Pedido(@JsonProperty(value="numPedido")Long numPedido, @JsonProperty(value="precio")double precio, @JsonProperty(value="fecha")String fecha, 
+			@JsonProperty(value="correo")String emailUser, @JsonProperty(value="pagado")int pagado, @JsonProperty(value="entregado")int entregado
+			, @JsonProperty(value="hora")String hora, @JsonProperty(value="cambios") String cambios) {
 		super();
-		idPed =pId;
-		fecha = pFecha;
-		cantPersonas = pCantidadPersonas;
-		estado =pEstado;
+		this.numPedido = numPedido;
+		this.precio = precio;
+		this.fecha = fecha;
+		this.emailUser = emailUser;
+		this.pagado = pagado;
+		this.entregado = entregado;
+		this.hora = hora;
+		if (cambios != null && cambios != "") this.cambios = cambios;
+		else cambios = "Sin cambios";
 	}
-	public void setId(Long pId){
-		idPed=pId;
+
+	public String getCambios() {
+		return cambios;
 	}
-	public void setFecha(Integer pFecha){
-		fecha = pFecha;
+
+	public void setCambios(String cambios) {
+		this.cambios = cambios;
 	}
-	public void setPersonas(Integer pCantidadPersonas){
-		cantPersonas = pCantidadPersonas;
+
+	public Long getNumPedido() {
+		return numPedido;
 	}
-	public Integer getFecha(){
+
+	public void setNumPedido(Long numPedido) {
+		this.numPedido = numPedido;
+	}
+
+	public double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
+
+	public String getFecha() {
 		return fecha;
 	}
-	public Integer getCantPersonas(){
-		return cantPersonas;
-	}
-	public Long getId(){
-		return idPed;
-	}
-	public void setEstado(Integer pEstado){
-		estado = pEstado;
-	}
-	public Integer getEstado(){
-		return estado;
-	}
-	public ArrayList<Sirven> getProd(){
-		return productos;
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
 	}
 
+	public String getEmailUser() {
+		return emailUser;
+	}
+
+	public void setEmailUser(String emailUser) {
+		this.emailUser = emailUser;
+	}
+
+	public int getPagado() {
+		return pagado;
+	}
+
+	public void setPagado(int pagado) {
+		this.pagado = pagado;
+	}
+
+	public int getEntregado() {
+		return entregado;
+	}
+
+	public void setEntregado(int entregado) {
+		this.entregado = entregado;
+	}
+
+	public String getHora() {
+		return hora;
+	}
+
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
 }

@@ -77,15 +77,17 @@ public class DAOTablaPrefieren {
 		
 		return prefieren;
 	}
+	
 	public void addPrefieren(Prefieren prefieren)throws SQLException, Exception{
 		String sql = "INSERT INTO PREFIEREN VALUES (";
-		sql += "IDUSUARIO ="+prefieren.getIdusu()+",";
-		sql += "IDRESTAURANTE ="+prefieren.getIdRest()+")"; 
+		sql += prefieren.getIdusu()+",";
+		sql += prefieren.getIdRest()+")"; 
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
+	
 	public void upDatePedido(Prefieren prefieren)throws SQLException, Exception{
 		String sql = "UPDATE PREFIEREN SET ";
 		sql += "IDRESTAURANTE="+prefieren.getIdRest();

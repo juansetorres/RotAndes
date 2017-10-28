@@ -1,7 +1,5 @@
 package vos;
 
-
-
 import org.codehaus.jackson.annotate.*;
 
 public class Restaurante {
@@ -10,16 +8,13 @@ public class Restaurante {
 	private Long idRest;
 	@JsonProperty(value="name")
 	private String name;
-
-
 	@JsonProperty(value="tipoComida")
 	private String tipoComida;
 	@JsonProperty(value="paginaWeb")
 	private String paginaWeb;
 
-	private Menu menu;
 
-	public Restaurante(@JsonProperty(value="id")Long idR, @JsonProperty(value="name") String pName, @JsonProperty(value="tipoComida") String tipoComidaR,@JsonProperty(value="paginaWeb")String paginaWebR){
+	public Restaurante(@JsonProperty(value="id")Long idR, @JsonProperty(value="name") String pName, @JsonProperty(value="tipoComida") String tipoComidaR,@JsonProperty(value="paginaWeb")String paginaWebR ){
 		super();
 		idRest = idR;
 		tipoComida = tipoComidaR;
@@ -53,15 +48,6 @@ public class Restaurante {
 	public void setId(Long pId){
 		idRest = pId;
 	}
-
-	public Menu getMenu() {
-		return menu;
-	}
-
-	public void setMenu(Menu menu) {
-		this.menu = menu;
-	}
-
 
 
 }

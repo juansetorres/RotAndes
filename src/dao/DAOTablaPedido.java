@@ -9,19 +9,25 @@ import java.util.ArrayList;
 import vos.Pedido;
 
 public class DAOTablaPedido {
+
 	/**
-	 * Arraylits de recursos que se usan para la ejecuciÃ³n de sentencias SQL
+	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
 	 */
 	private ArrayList<Object> recursos;
 
 	/**
-	 * Atributo que genera la conexiÃ³n a la base de datos
+	 * Atributo que genera la conexión a la base de datos
 	 */
 	private Connection conn;
-	
-	public DAOTablaPedido(){
-		recursos = new ArrayList<>();
+
+	/**
+	 * Metodo constructor que crea DAOPedido
+	 * <b>post: </b> Crea la instancia del DAO e inicializa el Arraylist de recursos
+	 */
+	public DAOTablaPedido() {
+		recursos = new ArrayList<Object>();
 	}
+
 	/**
 	 * Metodo que cierra todos los recursos que estan enel arreglo de recursos
 	 * <b>post: </b> Todos los recurso del arreglo de recursos han sido cerrados
@@ -37,76 +43,83 @@ public class DAOTablaPedido {
 		}
 	}
 
-
 	/**
-	 * Metodo que inicializa la connection del DAO a la base de datos con la conexion que entra como parametro.
+	 * Metodo que inicializa la connection del DAO a la base de datos con la conexión que entra como parametro.
 	 * @param con  - connection a la base de datos
 	 */
-	public void setConn(Connection conn) {
-		this.conn = conn;
+	public void setConn(Connection con){
+		this.conn = con;
 	}
-	public ArrayList<Pedido> darPedidos()throws SQLException, Exception{
-		ArrayList<Pedido> pedidos = new ArrayList<>();
-		String sql = "SELECT * FROM PEDIDOS";
+
+
+	public ArrayList<Pedido> darPedidos() throws SQLException, Exception {
+		ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+
+		String sql = "SELECT * FROM PEDIDO";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
+
 		while (rs.next()) {
-			Long id = rs.getLong("ID");
-			Integer fecha = rs.getInt("FECHA");
-			Integer cantPerso = rs.getInt("CPERSONAS");
-			Integer estado = rs.getInt("ESTADO");
-			pedidos.add(new Pedido(id, fecha, cantPerso, estado));
+			Long numPedido = rs.getLong("NUMPEDIDO");
+			double precio = rs.getDouble("PRECIO");
+			String fecha = rs.getString("FECHA");
+			String emailUser = rs.getString("EMAILUSER");
+			int pagado = rs.getInt("PAGADO");
+			int entregado = rs.getInt("ENTREGADO");
+			String hora = rs.getString("HORA");
+			String cambio = rs.getString("CAMBIO");
+			pedidos.add(new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora,cambio));
 		}
-		
 		return pedidos;
 	}
-	public Pedido darPedido(Long id)throws SQLException, Exception{
-		Pedido pedido = null;
-		String sql = "SELECT * FROM PEDIDOS WHERE ID ="+id;
+	
+	/**
+	 * Metodo que, usando la conexión a la base de datos, saca todos los pedidos de la base de datos
+	 * <b>SQL Statement:</b> SELECT * FROM PEDIDOS;
+	 * @return Arraylist con los pedidos de la base de datos.
+	 * @throws SQLException - Cualquier error que la base de datos arroje.
+	 * @throws Exception - Cualquier error que no corresponda a la base de datos
+	 */
+	public ArrayList<Pedido> darPedidosCliente(String emailCliente) throws SQLException, Exception {
+		ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+
+		String sql = "SELECT * FROM PEDIDO WHERE EMAILUSER ='" + emailCliente + "'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
+
 		while (rs.next()) {
-			Long id2 = rs.getLong("ID");
-			Integer fecha = rs.getInt("FECHA");
-			Integer cantPerso = rs.getInt("CPERSONAS");
-			Integer estado = rs.getInt("ESTADO");
-			pedido = new Pedido(id2, fecha, cantPerso, estado);
+			Long numPedido = rs.getLong("NUMPEDIDO");
+			double precio = rs.getDouble("PRECIO");
+			String fecha = rs.getString("FECHA");
+			String emailUser = rs.getString("EMAILUSER");
+			int pagado = rs.getInt("PAGADO");
+			int entregado = rs.getInt("ENTREGADO");
+			String hora = rs.getString("HORA");
+			String cambio = rs.getString("CAMBIO");
+			pedidos.add(new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio));
 		}
-		
-		return pedido;
-	}
-	public void addPedido(Pedido pedido)throws SQLException, Exception{
-		String sql = "INSERT INTO PEDIDOS VALUES (";
-		sql += "FECHA="+pedido.getFecha()+",";
-		sql += "CPERSONAS="+pedido.getCantPersonas()+",";
-		sql += "ESTADO" + pedido.getEstado()+")";
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		prepStmt.executeQuery();
-	}
-	public void upDatePedido(Pedido pedido)throws SQLException, Exception{
-		String sql = "UPDATE PEDIDOS SET ";
-		sql += "FECHA="+pedido.getFecha()+",";
-		sql += "CPERSONAS="+pedido.getCantPersonas()+",";
-		sql += "ESTADO" + pedido.getEstado();
-		sql += "WHERE ID = "+pedido.getId();
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		prepStmt.executeQuery();
-	}
-	public void deletePedido(Pedido pedido)throws SQLException, Exception{
-		String sql = "DELETE FROM PEDIDOS SET WHERE ID ="+pedido.getId();
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		prepStmt.executeQuery();
+		return pedidos;
 	}
 	
+	public void addPedido(Pedido pedido) throws SQLException, Exception {
 
+		String sql = "INSERT INTO PEDIDO VALUES (";
+		sql += pedido.getNumPedido() + ",";
+		sql += pedido.getPrecio() + ",";
+		sql += "TO_DATE('" + pedido.getFecha() + "', 'DD/MM/YYYY')"  + ",'";
+		sql += pedido.getEmailUser() + "',";
+		sql += pedido.getPagado() + ",";
+		sql += pedido.getEntregado() + ",'";
+		sql += pedido.getHora() + "','";
+		sql += pedido.getCambios() + "')";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+
+	}
 }

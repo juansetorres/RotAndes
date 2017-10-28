@@ -11,6 +11,7 @@ import vos.Ingrediente;
 
 
 public class DAOTablaIngredientes {
+	
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
 	 */
@@ -55,7 +56,7 @@ public class DAOTablaIngredientes {
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
 	public ArrayList<Ingrediente> darIngredientes() throws SQLException, Exception {
-		ArrayList<Ingrediente> zonas = new ArrayList<>();
+		ArrayList<Ingrediente> ingredi = new ArrayList<>();
 
 		String sql = "SELECT * FROM INGREDIENTES";
 
@@ -67,9 +68,9 @@ public class DAOTablaIngredientes {
 			Long id = rs.getLong("ID");
 			String descrip = rs.getString("DESCRIPCION");
 			String name = rs.getString("NAME");
-			zonas.add(new Ingrediente(id, name, descrip));
+			ingredi.add(new Ingrediente(id, name, descrip));
 		}
-		return zonas;
+		return ingredi;
 	}
 	public Ingrediente darIngredientes(Long id)throws SQLException, Exception{
 		Ingrediente ingrediente = null;

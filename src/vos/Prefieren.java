@@ -2,26 +2,27 @@ package vos;
 import org.codehaus.jackson.annotate.*;
 
 public class Prefieren {
+	
 	@JsonProperty("idUsuario")
-	private Long idUsu;
+	private Long idUsuario;
 	@JsonProperty("idRestaurante")
-	private Long idRest;
+	private Long idRestaurante;
 	
 	public Prefieren(@JsonProperty("idUsuario")Long pIdUsu,@JsonProperty("idRestaurante")Long pIdRest){
-		idUsu=pIdUsu;
-		idRest=pIdRest;
+		idUsuario=pIdUsu;
+		idRestaurante=pIdRest;
 	}
 	public Long getIdusu(){
-		return idUsu;
+		return idUsuario;
 	}
 	public Long getIdRest(){
-		return idRest;
+		return idRestaurante;
 	}
 	public void setIdUsu(Long pIdUsu){
-		idUsu = pIdUsu;
+		idUsuario = pIdUsu;
 	}
 	public void setIdRest(Long pIdRest){
-		idRest = pIdRest;
+		idRestaurante = pIdRest;
 	}
 	
 

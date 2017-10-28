@@ -4,15 +4,10 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
-
 import vos.*;
 import dao.*;
-import oracle.jdbc.dcn.DatabaseChangeRegistration;
 
 public class RotAndesTM {
 	/**
@@ -180,7 +175,8 @@ public class RotAndesTM {
 		return zonas;
 		
 	}
-	public List<Producto> darProductos()throws Exception{
+	
+	public List<Producto> darProductosPorRestaurante(Long id)throws Exception{
 		List<Producto> productos;
 		DAOTablaProductos daoProductos = new DAOTablaProductos();
 		try 
@@ -188,7 +184,7 @@ public class RotAndesTM {
 			//////transaccion
 			this.conn = darConexion();
 			daoProductos.setConn(conn);
-			productos = daoProductos.darProductos();
+			productos = daoProductos.darProductosPorRestaurante(buscarRestaurante(id).getName());
 		}
 		catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -306,6 +302,38 @@ public class RotAndesTM {
 			}
 		}
 		return rest;
+	}
+	
+	public Menu buscarMenu(Long id) throws Exception {
+		Menu menu;
+		DAOTablaMenu daoMenu = new DAOTablaMenu();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoMenu.setConn(conn);
+			menu = daoMenu.darMenu(id);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoMenu.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return menu;
 	}
 	
 	public void addRestaurante(Restaurante rest)throws Exception{
@@ -454,17 +482,17 @@ public class RotAndesTM {
 		}
 	}
 	
-	public void addProducto(Producto prod)throws Exception{
+	public void addProducto(Long idRestauratne,Producto prod )throws Exception{
 		DAOTablaProductos daoProd = new DAOTablaProductos();
-		if(darProductos().contains(prod)){
-			throw new Exception("ya existe el producto");
+		if(darProductosPorRestaurante(idRestauratne).contains(prod)){
+			throw new Exception("Ya existe el producto.");
 		}
 		try 
 		{
 			//////transaccion
 			this.conn = darConexion();
 			daoProd.setConn(conn);
-			daoProd.addProducto(prod);
+			daoProd.addProductoRestaurante(idRestauratne,prod);
 			conn.commit();
 
 		} catch (SQLException e) {
@@ -487,8 +515,11 @@ public class RotAndesTM {
 			}
 		}
 	}
-	public void addIngrediente(Long id ,Ingrediente ingrediente)throws Exception{
+	public void addIngrediente(Long idProd ,Ingrediente ingrediente)throws Exception{
 		DAOTablaIngredientes daoIngrediente = new DAOTablaIngredientes();
+		if(daoIngrediente.darIngredientes().contains(ingrediente)) {
+			throw new Exception("Ya existe el ingrediente.");
+		}
 		try 
 		{
 			//////transaccion
@@ -496,8 +527,6 @@ public class RotAndesTM {
 			daoIngrediente.setConn(conn);
 			daoIngrediente.addIngrediente(ingrediente);
 			conn.commit();
-			buscarProductoPorId(id).darIngredientes().add(ingrediente);
-			
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -519,7 +548,7 @@ public class RotAndesTM {
 			}
 		}
 	}
-	public Producto buscarProductoPorId(Long id) throws Exception {
+	public Producto buscarProductoPorId(Long idRest,Long idProd) throws Exception {
 		Producto producto;
 		DAOTablaProductos daoProducto = new DAOTablaProductos();
 		try 
@@ -527,7 +556,7 @@ public class RotAndesTM {
 			//////transaccion
 			this.conn = darConexion();
 			daoProducto.setConn(conn);
-			producto = daoProducto.darProducto(id);
+			producto = daoProducto.darProductoId(idRest, idProd);
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -550,72 +579,8 @@ public class RotAndesTM {
 		}
 		return producto;
 	}
-	public List<Producto> ordenarPorNombre()throws Exception{
-		List<Producto> productos;
-		DAOTablaProductos daoProductos = new DAOTablaProductos();
-		try 
-		{
-			//////transaccion
-			this.conn = darConexion();
-			daoProductos.setConn(conn);
-			productos = daoProductos.ordenerProductosPorNombre();
-		}
-		catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				daoProductos.cerrarRecursos();
-				if(this.conn!=null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
-		}
-		return productos;
-	}
-	public List<Producto> darProductosOrdenadosPorCOsto(String name)throws Exception{
-		List<Producto> productos;
-		DAOTablaProductos daoProductos = new DAOTablaProductos();
-		try 
-		{
-			//////transaccion
-			this.conn = darConexion();
-			daoProductos.setConn(conn);
-			productos = daoProductos.darProductosPorNombreOrdenadosPorPrecio(name);
-		}
-		catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				daoProductos.cerrarRecursos();
-				if(this.conn!=null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
-		}
-		return productos;
-	}
-	
 	public void addMenu(Menu menu, Long id)throws Exception{
 		DAOTablaMenu daoMenu = new DAOTablaMenu();
-		Restaurante rest = buscarRestaurante(id);
 		if(darMenus().contains(menu)){
 			throw new Exception("ya existe el Menu");
 		}
@@ -624,7 +589,6 @@ public class RotAndesTM {
 			//////transaccion
 			this.conn = darConexion();
 			daoMenu.setConn(conn);
-			rest.setMenu(menu);
 			daoMenu.addMenu(menu);
 			conn.commit();
 
@@ -648,50 +612,58 @@ public class RotAndesTM {
 			}
 		}
 	}
+	public void addProductoMenu(Long idMenu, Long idPlato) throws Exception {
+		DAOTablaMenuProductos daoMenuPlato = new DAOTablaMenuProductos();
+		if(darMenus().contains(buscarMenu(idMenu))) {
+			throw new Exception("No existe el menu");
+		}
+		try 
+		{
+			this.conn = darConexion();
+			daoMenuPlato.setConn(conn);
+			MenuProducto menuPlato = new MenuProducto(idMenu, idPlato);
+			daoMenuPlato.addMenuPlato(menuPlato);
+			conn.commit();
+			
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoMenuPlato.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		
+	}
 	
-	public void addProducaPedido(Long id,Long id2) throws Exception {
-		Pedido pedido;
+	public void addPedidoProducto(Pedido pedido, Long idProd) throws Exception {
 		DAOTablaPedido daoPedido = new DAOTablaPedido();
+		DAOTablaPedidoProducto daoPedidoPlato = new DAOTablaPedidoProducto();
+		DAOTablaProductos daoPlato = new DAOTablaProductos();
 		try 
 		{
 			//////transaccion
 			this.conn = darConexion();
 			daoPedido.setConn(conn);
-			pedido = daoPedido.darPedido(id);
-			pedido.getProd().add(buscarSirven(id2));
-
-		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				daoPedido.cerrarRecursos();
-				if(this.conn!=null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
-		}
-		
-	}
-	public void addPedido(Pedido pedidos) throws Exception {
-		DAOTablaPedido daoPedido = new DAOTablaPedido();
-		try 
-		{
-			//////transaccion
-			this.conn = darConexion();
-			daoPedido.setConn(conn);
-			daoPedido.addPedido(pedidos);
-			conn.commit();
+			daoPedidoPlato.setConn(conn);
+			daoPlato.setConn(conn);
+			if (daoPlato.darProducto(idProd).getDisponibilidad() < 1)
+				throw new Exception("No hay disponibilidad del plato " + daoPlato.darProducto(idProd).getName());
+			daoPedido.addPedido(pedido);
+			PedidoProducto pedidoPlato = new PedidoProducto(pedido.getNumPedido(), idProd);
+			daoPedidoPlato.addPedidoProducto(pedidoPlato);
 			
-
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -703,103 +675,7 @@ public class RotAndesTM {
 		} finally {
 			try {
 				daoPedido.cerrarRecursos();
-				if(this.conn!=null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
-		}
-		
-	}
-	public Pedido buscarPedido(Long id) throws Exception {
-		Pedido pedido;
-		DAOTablaPedido daoPedido = new DAOTablaPedido();
-		try 
-		{
-			//////transaccion
-			this.conn = darConexion();
-			daoPedido.setConn(conn);
-			pedido = daoPedido.darPedido(id);
-			conn.commit();
-
-		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				daoPedido.cerrarRecursos();
-				if(this.conn!=null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
-		}
-		return pedido;
-		
-	}
-	public void finalizaPedido(Pedido pedidos) throws Exception{
-		DAOTablaPedido daoPedido = new DAOTablaPedido();
-		DAOTablaSirven daosirven = new DAOTablaSirven();
-		try 
-		{
-			//////transaccion
-			this.conn = darConexion();
-			daoPedido.setConn(conn);
-			daoPedido.upDatePedido(pedidos);
-			conn.commit();
-
-		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				daoPedido.cerrarRecursos();
-				if(this.conn!=null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
-		}
-		try 
-		{
-			//////transaccion
-			this.conn = darConexion();
-			daosirven.setConn(conn);
-			for(Sirven sirven : pedidos.getProd()){
-				sirven.setCant(sirven.darCantidad()-1);
-				daosirven.upDateMenu(sirven);
-				
-			}
-			
-			conn.commit();
-
-		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				daoPedido.cerrarRecursos();
+				daoPedidoPlato.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -809,102 +685,11 @@ public class RotAndesTM {
 			}
 		}
 	}
-	public Sirven buscarSirven(Long idPro)throws Exception{
-		Sirven sirven;
-		DAOTablaSirven daoSirven = new DAOTablaSirven();
-		try 
-		{
-			//////transaccion
-			this.conn = darConexion();
-			daoSirven.setConn(conn);
-			sirven = daoSirven.darSirvenUni(idPro);
-
-		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				daoSirven.cerrarRecursos();
-				if(this.conn!=null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
-		}
-		return sirven;
-	}
-	public ArrayList<Producto> darMasServido()throws Exception{
-		ArrayList<Producto> producto = new ArrayList<>();
-		ArrayList<Sirven> sirven = new ArrayList<>();
-		DAOTablaSirven daoSirven = new DAOTablaSirven();
-		DAOTablaProductos daoProducto = new DAOTablaProductos();
-		try 
-		{
-			//////transaccion
-			this.conn = darConexion();
-			daoSirven.setConn(conn);
-			sirven = daoSirven.darMasServidos();
-
-		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				daoSirven.cerrarRecursos();
-				if(this.conn!=null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
-		}
-		try 
-		{
-			//////transaccion
-			this.conn = darConexion();
-			daoProducto.setConn(conn);
-			for(Sirven x : sirven){
-				producto.add(buscarProductoPorId(x.getIdProducto()));
-			}
-
-		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				daoProducto.cerrarRecursos();
-				if(this.conn!=null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
-		}
-		return producto;
-		
-	}
+	
 	public void addPreferencia(Long id,Prefieren prefe)throws Exception{
 		DAOTablaPrefieren daoPrefiren = new DAOTablaPrefieren();
-		if(prefe.getIdusu()!=id){
+		System.out.println(id + "            "+ prefe.getIdusu() );
+		if( !prefe.getIdusu().equals(id) ){
 			throw new Exception("no puedes postear la preferencia de otro cliente");
 		}
 		try 
@@ -936,6 +721,7 @@ public class RotAndesTM {
 			}
 		}
 	}
+	
 	public void upDatePrefieren(Long id,Prefieren prefieren) throws Exception {
 		DAOTablaPrefieren daoPrefieren = new DAOTablaPrefieren();
 		try 
@@ -944,6 +730,7 @@ public class RotAndesTM {
 			this.conn = darConexion();
 			daoPrefieren.setConn(conn);
 			daoPrefieren.upDatePedido(prefieren);
+			conn.commit();
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -965,6 +752,4 @@ public class RotAndesTM {
 			}
 		}
 	}
-	
-
 }

@@ -6,15 +6,17 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import tm.RotAndesTM;
+import vos.Ingrediente;
 import vos.Menu;
+import vos.MenuProducto;
 import vos.Producto;
 import vos.Restaurante;
 
@@ -71,10 +73,10 @@ public class RestaurantesService {
 	@Path( "{id: \\d+}/productos" )
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addProducto(Producto prod) {
+	public Response addProducto(@PathParam( "id" ) Long id,Producto prod) {
 		RotAndesTM tm = new RotAndesTM(getPath());
 		try {
-			tm.addProducto(prod);
+			tm.addProducto(id,prod);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
@@ -83,7 +85,7 @@ public class RestaurantesService {
 
 	@GET
 	@Path( "{id: \\d+}" )
-	@Produces( { MediaType.APPLICATION_JSON } )
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRestaurante( @PathParam( "id" ) Long id ){
 		RotAndesTM tm = new RotAndesTM( getPath( ) );
 		try{
@@ -95,5 +97,64 @@ public class RestaurantesService {
 		}
 	}
 	
+	@GET
+	@Path( "{id: \\d+}/productos/{idProd: \\d+}" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getProducto(@PathParam( "id" ) Long idRest, @PathParam( "idProd" ) Long idProd ) {
+		RotAndesTM tm = new RotAndesTM( getPath( ) );
+		try{
+			Producto r = tm.buscarProductoPorId(idRest, idProd);
+			return Response.status( 200 ).entity( r ).build( );			
+		}
+		catch( Exception e ){
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
 	
+	@GET
+	@Path( "{id: \\d+}/productos" )
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getProducts(@PathParam( "id" ) Long idRest) {
+		RotAndesTM tm = new RotAndesTM( getPath( ) );
+		List<Producto> r;
+		try{
+			r = tm.darProductosPorRestaurante(idRest);
+		
+		}
+		catch( Exception e ){
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+		return Response.status( 200 ).entity( r ).build( );	
+	}
+	
+	@POST
+	@Path("{id : \\d+}/ingredientes")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addIngrediente(@PathParam("id") Long idRest,Ingrediente ingrediente) {
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try {
+			tm.addIngrediente(idRest, ingrediente);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(ingrediente).build();
+	}
+	
+	@PUT
+	@Path( "{id: \\d+}/menuProducto" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addProductoMenu( @PathParam( "id" ) Long idRest, MenuProducto prod){
+		RotAndesTM tm = new RotAndesTM(getPath());
+		Menu menu;
+		try {
+			tm.addProductoMenu(prod.getIdMenu(), prod.getIdProducto());
+			menu = tm.buscarMenu(prod.getIdMenu());
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(menu).build();
+	}
 }

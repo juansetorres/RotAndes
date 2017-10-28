@@ -1,65 +1,107 @@
 package vos;
 
-import java.util.ArrayList;
 
-import org.codehaus.jackson.annotate.*;
+
+import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Producto {
+	
 	@JsonProperty(value="id")
-	private Long idPro;
-	@JsonProperty(value = "costo")
-	private Integer costo;
-	@JsonProperty(value = "precio")
-	private Integer precio;
+	private Long id;
+	
 	@JsonProperty(value="name")
 	private String name;
+	
 	@JsonProperty(value="descripcion")
 	private String descripcion;
-	
-	private ArrayList<Ingrediente> ingredientes = new ArrayList<>();
 
-	public Producto(@JsonProperty(value="id") Long pId,@JsonProperty(value="name")String pNombre,@JsonProperty(value="descripcion")String pDescrip,@JsonProperty(value = "costo") Integer pCosto, @JsonProperty(value = "precio") Integer pPrecio){
-		super();
-		idPro=pId;
-		name = pNombre;
-		descripcion=pDescrip;
-		costo=pCosto;
-		precio = pPrecio;
+	@JsonProperty(value="costo")
+	private Double costo;
+
+	@JsonProperty(value="precio")
+	private Double precio;
+
+	@JsonProperty(value="disponibilidad")
+	private Integer disponibilidad;
+
+	@JsonProperty(value="restaurante")
+	private String restaurante;
+
+	@JsonProperty(value="cantidadMaxima")
+	private int cantidadMaxima;
+
+	public Producto(@JsonProperty(value="id") Long id,@JsonProperty(value="name") String pName, @JsonProperty(value="descripcion") String pDesc,@JsonProperty(value="costo") Double costo, @JsonProperty(value="precio") Double precio,@JsonProperty(value="disponibilidad") Integer disponibilidad,@JsonProperty(value="restaurante") String restaurante, @JsonProperty(value="cantidadMaxima") int cantidadMaxima){
+		this.id = id;
+		this.name = pName;
+		this.descripcion = pDesc;
+		this.costo = costo;
+		this.precio = precio;
+		this.disponibilidad = disponibilidad;
+		this.restaurante = restaurante;
+		this.cantidadMaxima = cantidadMaxima;
 	}
-	public Integer getCosto(){
-		return costo;
+
+	public Long getId() {
+		return id;
 	}
-	public Integer getPrecio(){
-		return precio;
+
+	public void setId(Long idP) {
+		this.id = idP;
 	}
-	public Long getId(){
-		return idPro;
-	}
-	
-	public void setCosto(Integer pCosto){
-		costo = pCosto;
-	}
-	public void setPrecio(Integer pPrecio){
-		precio = pPrecio;
-	}
-	public void setId(Long pId){
-		idPro = pId;
-	}
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
-	public String getDescrip(){
-		return descripcion;
-	}
-	
-	public void setName(String pName){
-		name = pName;
-	}
-	public void setDescrip(String pDescrip){
-		descripcion = pDescrip;
-	}
-	public ArrayList<Ingrediente> darIngredientes(){
-		return ingredientes;
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	
+	public Double getCosto() {
+		return costo;
+	}
+
+	public void setCosto(Double costo) {
+		this.costo = costo;
+	}
+
+	public Double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(Double precio) {
+		this.precio = precio;
+	}
+
+	public Integer getDisponibilidad() {
+		return disponibilidad;
+	}
+
+	public void setDisponibilidad(Integer disponibilidad) {
+		this.disponibilidad = disponibilidad;
+	}
+
+	public String getRestaurante() {
+		return restaurante;
+	}
+
+	public void setRestaurante(String restaurante) {
+		this.restaurante = restaurante;
+	}
+
+	public int getCantidadMaxima() {
+		return cantidadMaxima;
+	}
+
+	public void setCantidadMaxima(int cantidadMaxima) {
+		this.cantidadMaxima = cantidadMaxima;
+	}
 }
