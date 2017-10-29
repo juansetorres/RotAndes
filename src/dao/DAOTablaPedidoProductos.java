@@ -97,5 +97,15 @@ public class DAOTablaPedidoProductos {
 		prepStmt.executeQuery();
 
 	}
+	public void upDatePedidoProducto(PedidoProducto pedido)throws SQLException, Exception{
+		String sql = "UPDATE PEDIDOPRODUCTO SET ";
+		sql += "ID_PRODUCTO=" + pedido.getIdProducto();
+		sql += " WHERE ID = " + pedido.getNumPedido();
+
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
 
 }

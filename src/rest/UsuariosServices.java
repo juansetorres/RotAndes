@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotAndesTM;
+import vos.EquivalentesP;
 import vos.Pedido;
 import vos.Prefieren;
 import vos.Restaurante;
@@ -138,5 +139,9 @@ public class UsuariosServices {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(prefieren).build();
+	}
+	@Path("{idUsuario: \\d+}/pedido")
+	public Class<PedidoService> realizarUnPedido(@PathParam( "idUsuario" ) Long id){
+		return PedidoService.class;
 	}
 }

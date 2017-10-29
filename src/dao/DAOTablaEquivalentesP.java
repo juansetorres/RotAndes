@@ -54,34 +54,37 @@ public class DAOTablaEquivalentesP {
 			ResultSet rs = prepStmt.executeQuery();
 
 			while (rs.next()) {
-				String produ1 = rs.getString("PRODU1");
-				String produ2 = rs.getString("PRODU2");
+				Long product1 = rs.getLong("PRODU1");
+				Long idRest = rs.getLong("IDRESTAURANTE");
+				Long product2 = rs.getLong("PRODU2");
 				String tipo = rs.getString("TIPO");
-				equivalentes.add(new EquivalentesP(tipo, produ1,produ2));
+				equivalentes.add(new EquivalentesP(idRest,tipo, product1,product2));
 			}
 			return equivalentes;
 		}
-		public ArrayList<EquivalentesP> buscarEquivalentesPorProducto1(String produ1,String produ2) throws SQLException, Exception {
+		public ArrayList<EquivalentesP> buscarEquivalentesPorProducto1(Long produ1) throws SQLException, Exception {
 			ArrayList<EquivalentesP> equivalentes = new ArrayList<EquivalentesP>();
 
-			String sql = "SELECT * FROM EQUIVALENTESP WHERE PRODU1 ='" + produ1 + "'and PRODU2 ='"+produ2+"'";
+			String sql = "SELECT * FROM EQUIVALENTESP WHERE PRODU1 ='" + produ1 +"'";
 
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
 			recursos.add(prepStmt);
 			ResultSet rs = prepStmt.executeQuery();
 
 			while (rs.next()) {
-				String product1 = rs.getString("PRODU1");
-				String product2 = rs.getString("PRODU2");
+				Long product1 = rs.getLong("PRODU1");
+				Long idRest = rs.getLong("IDRESTAURANTE");
+				Long product2 = rs.getLong("PRODU2");
 				String tipo = rs.getString("TIPO");
-				equivalentes.add(new EquivalentesP(tipo, product1,product2));
+				equivalentes.add(new EquivalentesP(idRest,tipo, product1,product2));
 			}
 
 			return equivalentes;
 		}
 		public void addEquivalente(EquivalentesP equivalente) throws SQLException, Exception {
 
-			String sql = "INSERT INTO EQUIVALENTESP VALUES ('";
+			String sql = "INSERT INTO EQUIVALENTESP VALUES (";
+			sql += equivalente.getIdRest() + ",'";
 			sql += equivalente.getTipo() + "','";
 			sql += equivalente.getProdu1() + "',";
 			sql += "'"+equivalente.getProdu2()+"')"; 

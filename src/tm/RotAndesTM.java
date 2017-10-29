@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import vos.*;
@@ -852,5 +854,162 @@ public class RotAndesTM {
 				throw exception;
 			}
 		}
+	}
+	
+	public Producto darProducto(Long idProdu)throws Exception{
+		
+		Producto producto;
+		DAOTablaProductos daoProducto = new DAOTablaProductos();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoProducto.setConn(conn);
+			producto = daoProducto.darProducto(idProdu);
+	
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoProducto.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return producto;
+	}
+	public void addEquivalenciaProducto(Long idRest,EquivalentesP equiv)throws Exception{
+		DAOTablaEquivalentesP daoEquiv = new DAOTablaEquivalentesP();
+		if(darProducto(equiv.getProdu1()) ==null) {
+			throw new Exception("No exsite el producto a comparar 1");
+		}
+		if(darProducto(equiv.getProdu2()) == null) {
+			throw new Exception("No exsite el producto");
+		}
+		if(equiv.getIdRest()==null){
+			equiv.setIdRest(idRest);
+		}
+		if(equiv.getIdRest()!=idRest){
+			throw new Exception("No tienes el permiso de hacer esta operacion");
+		}
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoEquiv.setConn(conn);
+			daoEquiv.addEquivalente(equiv);
+			conn.commit();
+		} catch (SQLException e) {
+			conn.rollback();
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			conn.rollback();
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoEquiv.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	public void registrarPedidoEquiv(PedidoProducto pedido)throws Exception{
+		DAOTablaEquivalentesP daoEquiv = new DAOTablaEquivalentesP();
+		DAOTablaPedidoProductos daoPedidoPro=new DAOTablaPedidoProductos();
+		try{
+			this.conn = darConexion();
+			daoPedidoPro.setConn(conn);
+			ArrayList<PedidoProducto> aCambiar = daoPedidoPro.bucarPedidoProductoPorIdPedido(pedido.getNumPedido());
+			daoEquiv.setConn(conn);
+			for(PedidoProducto p : aCambiar){
+				ArrayList<EquivalentesP> aCambiar2 = daoEquiv.buscarEquivalentesPorProducto1(p.getIdProducto());
+				for (EquivalentesP equivalentesP : aCambiar2) {
+					if(equivalentesP.getProdu2()==pedido.getIdProducto()){
+						daoPedidoPro.upDatePedidoProducto(pedido);
+					}
+					
+					
+				}
+			}
+			conn.commit();
+			if(daoPedidoPro.bucarPedidoProductoPorIdPedido(pedido.getIdProducto())==null){
+				throw new Exception("No existe el producto por el que se pueda cambiar el productoEquivaletne");
+			}
+				
+		}
+		 catch (SQLException e) {
+			 conn.rollback();
+			 System.err.println("SQLException:" + e.getMessage());
+			 e.printStackTrace();
+			 throw e;
+		} catch (Exception e) {
+			conn.rollback();
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}
+		finally{
+			try {
+				daoPedidoPro.cerrarRecursos();
+				daoEquiv.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+			
+			
+		}
+	}
+	public List<Pedido> darPedidos()throws Exception{
+		List<Pedido> pedidos;
+		DAOTablaPedido daoPedido = new DAOTablaPedido();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoPedido.setConn(conn);
+			pedidos = daoPedido.darPedidos();
+		}
+		catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPedido.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return pedidos;
 	}
 }

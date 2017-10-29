@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import tm.RotAndesTM;
 import vos.Equivalentes;
+import vos.EquivalentesP;
 import vos.Ingrediente;
 import vos.Menu;
 import vos.MenuProducto;
@@ -186,5 +187,22 @@ public class RestaurantesService {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(rta).build();
+	}
+	@POST
+	@Path( "{idRest: \\d+}/equivalenciaProducto" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addEquivalentProduct(Long idRest,EquivalentesP equiv){
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try {
+			tm.addEquivalenciaProducto(idRest,equiv);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(equiv).build();
+	}
+	@Path("{idRestaurante: \\d+}/pedido")
+	public Class<PedidoService> realizarUnPedido(@PathParam( "idUsuario" ) Long id){
+		return PedidoService.class;
 	}
 }

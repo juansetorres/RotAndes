@@ -8,30 +8,41 @@ public class EquivalentesP {
 	private String tipo;
 
 	@JsonProperty(value="producto1")
-	private String produ1;
+	private Long produ1;
 	
 	@JsonProperty(value="producto2")
-	private String produ2;
+	private Long produ2;
 	
-	public EquivalentesP (@JsonProperty(value="tipo") String pTipo,@JsonProperty(value="producto1") String pProdu1,@JsonProperty(value="producto2") String pProdu2){
+	@JsonProperty(value="idRestaurante")
+	private Long idRest;
+	
+	public EquivalentesP (@JsonProperty(value="idRestaurante")Long pIdRest,@JsonProperty(value="tipo") String pTipo,@JsonProperty(value="producto1") Long pProdu1,@JsonProperty(value="producto2") Long pProdu2){
 		super();
+		this.idRest = pIdRest;
 		this.tipo = pTipo;
 		this.produ1 = pProdu1;
 		this.produ2 = pProdu2;
 	}
-	public String getProdu1() {
+	public Long getProdu1() {
 		return produ1;
 	}
 
-	public void setProdu1(String pProdu1) {
+	public void setProdu1(Long pProdu1) {
 		this.produ1 = pProdu1;
 	}
 
-	public String getProdu2() {
+	public Long getProdu2() {
 		return produ2;
 	}
+	public void setIdRest(Long pIdRest) {
+		this.idRest = pIdRest;
+	}
 
-	public void setProdu2(String pProdu2) {
+	public Long getIdRest() {
+		return idRest;
+	}
+
+	public void setProdu2(Long pProdu2) {
 		this.produ2 = pProdu2;
 	}
 	public String getTipo() {
