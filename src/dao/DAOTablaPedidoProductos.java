@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import vos.PedidoProducto;
+import vos.Zona;
 
 public class DAOTablaPedidoProductos {
 
@@ -102,6 +103,14 @@ public class DAOTablaPedidoProductos {
 		sql += "ID_PRODUCTO=" + pedido.getIdProducto();
 		sql += " WHERE ID = " + pedido.getNumPedido();
 
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	public void daeletePedidoProducto(PedidoProducto pedido)throws SQLException, Exception{
+		String sql = "DELETE FROM PEDIDOPRODUCTO";
+		sql += " WHERE ID_PRODUCTO = " + pedido.getIdProducto();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

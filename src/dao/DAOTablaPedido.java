@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import vos.Pedido;
+import vos.Zona;
 
 public class DAOTablaPedido {
 
@@ -104,6 +105,28 @@ public class DAOTablaPedido {
 		}
 		return pedidos;
 	}
+	public Pedido darPedidoId(Long idPedido) throws SQLException, Exception {
+		Pedido pedidos =null;
+
+		String sql = "SELECT * FROM PEDIDO WHERE NUMPEDIDO ='" + idPedido + "'";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if (rs.next()) {
+			Long numPedido = rs.getLong("NUMPEDIDO");
+			double precio = rs.getDouble("PRECIO");
+			String fecha = rs.getString("FECHA");
+			String emailUser = rs.getString("EMAILUSER");
+			int pagado = rs.getInt("PAGADO");
+			int entregado = rs.getInt("ENTREGADO");
+			String hora = rs.getString("HORA");
+			String cambio = rs.getString("CAMBIO");
+			pedidos =new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio);
+		}
+		return pedidos;
+	}
 	
 	public void addPedido(Pedido pedido) throws SQLException, Exception {
 
@@ -121,5 +144,16 @@ public class DAOTablaPedido {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 
+	}
+	public void upDatePedido(Pedido pedido)throws SQLException, Exception{
+		String sql = "UPDATE PEDIDOS SET ";
+		sql += "PAGADO ="+pedido.getPagado();
+		sql += "ENTREGADO="+pedido.getEntregado();
+		sql += "WHERE NUMPEDIDO ="+pedido.getNumPedido();
+
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
 	}
 }
