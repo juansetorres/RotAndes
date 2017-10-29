@@ -2,7 +2,12 @@ package vos;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
+
+
 
 public class Producto {
 	
@@ -29,6 +34,8 @@ public class Producto {
 
 	@JsonProperty(value="cantidadMaxima")
 	private int cantidadMaxima;
+	
+	private List<Ingrediente> ingredientes;
 
 	public Producto(@JsonProperty(value="id") Long id,@JsonProperty(value="name") String pName, @JsonProperty(value="descripcion") String pDesc,@JsonProperty(value="costo") Double costo, @JsonProperty(value="precio") Double precio,@JsonProperty(value="disponibilidad") Integer disponibilidad,@JsonProperty(value="restaurante") String restaurante, @JsonProperty(value="cantidadMaxima") int cantidadMaxima){
 		this.id = id;
@@ -39,6 +46,7 @@ public class Producto {
 		this.disponibilidad = disponibilidad;
 		this.restaurante = restaurante;
 		this.cantidadMaxima = cantidadMaxima;
+		ingredientes = new ArrayList<>();
 	}
 
 	public Long getId() {
