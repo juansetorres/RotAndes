@@ -24,11 +24,11 @@ public class PedidoProducto {
 		this.numPedido = numPedido;
 	}
 
-	public Long getIdPlato() {
+	public Long getIdProducto() {
 		return idProducto;
 	}
 
-	public void setIdPlato(Long idPlato) {
+	public void setIdProducto(Long idPlato) {
 		this.idProducto = idPlato;
 	}
 }

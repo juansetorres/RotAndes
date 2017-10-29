@@ -14,6 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import tm.RotAndesTM;
+import vos.Equivalentes;
 import vos.Ingrediente;
 import vos.Menu;
 import vos.MenuProducto;
@@ -120,7 +121,6 @@ public class RestaurantesService {
 		List<Producto> r;
 		try{
 			r = tm.darProductosPorRestaurante(idRest);
-		
 		}
 		catch( Exception e ){
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
@@ -156,5 +156,35 @@ public class RestaurantesService {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(menu).build();
+	}
+	
+	@POST
+	@Path( "{id: \\d+}/equivalentes" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addEquivalenteIngrediente( Equivalentes equiv ) {
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try {
+			tm.addEquivalenciaIngrediente(equiv);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(equiv).build();
+	}
+	
+	@PUT
+	@Path( "{id: \\d+}/surtir" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response surtirProductos(@PathParam( "id" ) Long idRest) {
+		RotAndesTM tm = new RotAndesTM(getPath());
+		List<Producto> rta;
+		try {
+			tm.surtirProductos(idRest);
+			rta = tm.darProductosPorRestaurante(idRest);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(rta).build();
 	}
 }

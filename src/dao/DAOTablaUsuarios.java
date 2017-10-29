@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import vos.Usuario;
 
 
-public class DAOTablaUsuario {
+public class DAOTablaUsuarios {
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
 	 */
@@ -21,7 +21,7 @@ public class DAOTablaUsuario {
 	private Connection conn;
 	
 	
-	public DAOTablaUsuario(){
+	public DAOTablaUsuarios(){
 		recursos = new ArrayList<>();
 	}
 	/**

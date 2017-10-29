@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import vos.PedidoProducto;
 
-public class DAOTablaPedidoProducto {
+public class DAOTablaPedidoProductos {
 
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
@@ -24,7 +24,7 @@ public class DAOTablaPedidoProducto {
 	 * Metodo constructor que crea DAOPedidoPlato
 	 * <b>post: </b> Crea la instancia del DAO e inicializa el Arraylist de recursos
 	 */
-	public DAOTablaPedidoProducto() {
+	public DAOTablaPedidoProductos() {
 		recursos = new ArrayList<Object>();
 	}
 
@@ -51,18 +51,10 @@ public class DAOTablaPedidoProducto {
 		this.conn = con;
 	}
 
-
-	/**
-	 * Metodo que, usando la conexión a la base de datos, saca todos los pedidosPlato de la base de datos
-	 * <b>SQL Statement:</b> SELECT * FROM PEDIDO_PLATO;
-	 * @return Arraylist con los pedidosPlato de la base de datos.
-	 * @throws SQLException - Cualquier error que la base de datos arroje.
-	 * @throws Exception - Cualquier error que no corresponda a la base de datos
-	 */
 	public ArrayList<PedidoProducto> darPedidosPlato() throws SQLException, Exception {
 		ArrayList<PedidoProducto> pedidosProductos = new ArrayList<PedidoProducto>();
 
-		String sql = "SELECT * FROM PEDIDOPRODCTO";
+		String sql = "SELECT * FROM PEDIDOPRODUCTO";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -70,7 +62,7 @@ public class DAOTablaPedidoProducto {
 
 		while (rs.next()) {
 			Long numPedido = rs.getLong("NUMPEDIDO");
-			Long idPlato = rs.getLong("IDPLATO");
+			Long idPlato = rs.getLong("IDPRODUCTO");
 			pedidosProductos.add(new PedidoProducto(numPedido, idPlato));
 		}
 		return pedidosProductos;
@@ -88,7 +80,7 @@ public class DAOTablaPedidoProducto {
 
 		while (rs.next()) {
 			Long numPedido = rs.getLong("NUMPEDIDO");
-			Long idPlato = rs.getLong("IDPLATO");
+			Long idPlato = rs.getLong("IDPRODUCTO");
 			pedidosProductos.add(new PedidoProducto(numPedido, idPlato));
 		}
 		return pedidosProductos;
@@ -98,7 +90,7 @@ public class DAOTablaPedidoProducto {
 
 		String sql = "INSERT INTO PEDIDOPRODUCTO VALUES (";
 		sql += pedidoPlato.getNumPedido() + ",";
-		sql += pedidoPlato.getIdPlato() + ")";
+		sql += pedidoPlato.getIdProducto() + ")";
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

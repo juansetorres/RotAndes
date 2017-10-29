@@ -51,7 +51,7 @@ public class DAOTablaProductos {
 	public List<Producto> darProductosPorRestaurante(String restaurante) throws SQLException, Exception {
 		ArrayList<Producto> productos = new ArrayList<>();
 
-		String sql = "SELECT * FROM PRODUCTOS WHERE RESTAURANTE =" +restaurante ;
+		String sql = "SELECT * FROM PRODUCTOS WHERE RESTAURANTE = '" +restaurante +"'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -172,6 +172,7 @@ public class DAOTablaProductos {
 		
 		String sql = "UPDATE PRODUCTOS SET ";
 		sql += "NAME ='" + prodRest.getName()+"'";
+		sql += "DESCRIPCION ='" + prodRest.getDescripcion() + "'";
 		sql += "PRECIO = " + prodRest.getPrecio();
 		sql += ", COSTO = "+ prodRest.getCosto();
 		sql += ", DISPONIBILIDAD = " + prodRest.getDisponibilidad();
@@ -196,5 +197,16 @@ public class DAOTablaProductos {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+	}
+	
+	public void surtirProductos(Long idRest) throws SQLException, Exception {
+		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
+		daoRest.setConn(conn);
+		
+		String sql = "UPDATE PRODUCTOS SET DISPONIBILIDAD = CANTIDADMAXIMA  WHERE RESTAURANTE LIKE '" + daoRest.darRestaurante(idRest).getName() + "'";
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();	
 	}
 }

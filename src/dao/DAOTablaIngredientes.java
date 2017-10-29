@@ -48,13 +48,8 @@ public class DAOTablaIngredientes {
 	public void setConn(Connection conn) {
 		this.conn = conn;
 	}
-	/**
-	 * Metodo que, usando la conexion a la base de datos, saca todas las Zonas de la base de datos
-	 * <b>SQL Statement:</b> SELECT * FROM VIDEOS;
-	 * @return Arraylist con los videos de la base de datos.
-	 * @throws SQLException - Cualquier error que la base de datos arroje.
-	 * @throws Exception - Cualquier error que no corresponda a la base de datos
-	 */
+	
+
 	public ArrayList<Ingrediente> darIngredientes() throws SQLException, Exception {
 		ArrayList<Ingrediente> ingredi = new ArrayList<>();
 
@@ -72,7 +67,8 @@ public class DAOTablaIngredientes {
 		}
 		return ingredi;
 	}
-	public Ingrediente darIngredientes(Long id)throws SQLException, Exception{
+	
+	public Ingrediente darIngrediente(Long id)throws SQLException, Exception{
 		Ingrediente ingrediente = null;
 
 		String sql = "SELECT * FROM INGREDIENTES WHERE ID =" + id;
@@ -90,6 +86,25 @@ public class DAOTablaIngredientes {
 
 		return ingrediente;
 	}
+	public Ingrediente darIngredienteNombre(String name)throws SQLException, Exception{
+		Ingrediente ingrediente = null;
+
+		String sql = "SELECT * FROM INGREDIENTES WHERE NAME LIKE '" + name + "'";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if(rs.next()) {
+			String name2 = rs.getString("NAME");
+			Long id2 = rs.getLong("ID");
+			String descrip = rs.getString("DESCRIPCION");
+			ingrediente = new Ingrediente(id2, name2, descrip);
+		}
+
+		return ingrediente;
+	}
+	
 	public void addIngrediente(Ingrediente ingrediente)throws SQLException, Exception{
 		String sql = "INSERT INTO INGREDIENTES VALUES (";
 		sql += ingrediente.getId() + ",'";
@@ -101,6 +116,7 @@ public class DAOTablaIngredientes {
 		prepStmt.executeQuery();
 
 	}
+	
 	public void upDateIngre(Ingrediente ingrediente)throws SQLException, Exception{
 		String sql = "UPDATE INGREDIENTES SET ";
 		sql += "NAME='"+ ingrediente.getName()+"',";
@@ -112,6 +128,7 @@ public class DAOTablaIngredientes {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
+	
 	public void deleteIngrediente(Ingrediente ingrediente)throws SQLException, Exception{
 		String sql = "DELETE FROM INGREDIENTES";
 		sql += " WHERE ID = " + ingrediente.getId();

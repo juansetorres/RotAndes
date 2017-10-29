@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import vos.ProductoIngrediente;
 
-public class DAOTablaProductoIngrediente {
+public class DAOTablaProductoIngredientes {
 
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
@@ -24,7 +24,7 @@ public class DAOTablaProductoIngrediente {
 	 * Metodo constructor que crea DAOIngredientesPlato
 	 * <b>post: </b> Crea la instancia del DAO e inicializa el Arraylist de recursos
 	 */
-	public DAOTablaProductoIngrediente() {
+	public DAOTablaProductoIngredientes() {
 		recursos = new ArrayList<Object>();
 	}
 
