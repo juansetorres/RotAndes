@@ -6,6 +6,8 @@ import org.codehaus.jackson.annotate.*;
 public class Menu {
 	@JsonProperty(value="id")
 	private Long id;
+	@JsonProperty(value="idRestaurante")
+	private Long idRestaurante;
 	@JsonProperty(value = "costo")
 	private Integer costo;
 	@JsonProperty(value = "precio")
@@ -13,8 +15,9 @@ public class Menu {
 	@JsonProperty(value = "productos")
 	private List<String> productos;
 	
-	public Menu(@JsonProperty(value ="id")Long pId,@JsonProperty(value = "costo")Integer pCosto,@JsonProperty(value = "precio")Integer pPrecio, @JsonProperty(value = "productos") List<String> rProductos){
+	public Menu(@JsonProperty(value="idRestaurante") Long idRest,@JsonProperty(value ="id")Long pId,@JsonProperty(value = "costo")Integer pCosto,@JsonProperty(value = "precio")Integer pPrecio, @JsonProperty(value = "productos") List<String> rProductos){
 		super();
+		idRestaurante = idRest;
 		id = pId;
 		costo = pCosto;
 		precio = pPrecio;
@@ -25,6 +28,12 @@ public class Menu {
 	}
 	public void setIdMenu(Long idMenu) {
 		this.id = idMenu;
+	}
+	public Long getIdRest() {
+		return idRestaurante;
+	}
+	public void setIdrest(Long pIdRest) {
+		this.idRestaurante = pIdRest;
 	}
 	public List<String> getProductos() {
 		return productos;

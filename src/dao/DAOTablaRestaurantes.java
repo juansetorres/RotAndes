@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import vos.Restaurante;
+import vos.Ventas;
 
 
 public class DAOTablaRestaurantes {
@@ -116,6 +117,25 @@ public class DAOTablaRestaurantes {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+	}
+	public ArrayList<Ventas> darVentaRest() throws SQLException,Exception{
+		ArrayList<Ventas> ventas = new ArrayList<>();
+
+		String sql = "SELECT IDRESTAURANTE as IdentRest,count(IDPEDIDOS) as VENTAS,SUM(PRECIO) as PRECIO FROM (SELECT * FROM  (SELECT * FROM PEDIDOMENU JOIN MENU ON PEDIDOMENU.ID_MENU = MENU.ID) a  NATURAL JOIN PEDIDOS ) b JOIN RESTAURANTES ON b.IDRESTAURANTE = RESTAURANTES.ID" ;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while(rs.next()) {
+			Long id = rs.getLong("ID");
+			int numVentas = rs.getInt("VENTAS");
+			double precio = rs.getDouble("PRECIO");
+			ventas.add(new Ventas(id, precio, numVentas));
+			
+		}
+		return ventas;
+		
 	}
 
 

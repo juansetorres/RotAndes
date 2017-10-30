@@ -61,6 +61,7 @@ public class DAOTablaMenu {
 
 		while (rs.next()) {
 			Long id = rs.getLong("ID");
+			Long id2 = rs.getLong("ID_RESTAURANTE");
 			Integer costo = rs.getInt("COSTO");
 			Integer precio = rs.getInt("PRECIO");
 			String sqlAux = "SELECT * FROM MENU_PROD WHERE ID_MENU ="+id;
@@ -72,7 +73,7 @@ public class DAOTablaMenu {
 				Long idProd = rsAux.getLong("ID_PRODUCTO");
 				productos.add(daoProd.darProducto(idProd).getName());
 			}
-			menus.add(new Menu(id, costo, precio, productos));
+			menus.add(new Menu(id2,id, costo, precio, productos));
 		}
 		return menus;
 	}
@@ -91,25 +92,25 @@ public class DAOTablaMenu {
 
 		while (rs.next()) {
 			Long id2 = rs.getLong("ID");
+			Long id3 = rs.getLong("ID_RESTAURANTE");
 			Integer costo = rs.getInt("COSTO");
 			Integer precio = rs.getInt("PRECIO");
-			
-			String sqlAux = "SELECT * FROM MENU_PROD WHERE ID_MENU ="+id2;
+			String sqlAux = "SELECT * FROM MENU_PROD WHERE ID_MENU ="+id;
 			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
 			recursos.add(prepStmtAux);
 			ResultSet rsAux = prepStmtAux.executeQuery();
 			while (rsAux.next())
 			{
 				Long idProd = rsAux.getLong("ID_PRODUCTO");
-				
 				productos.add(daoProd.darProducto(idProd).getName());
-			} 
-			menu = (new Menu(id2, costo, precio, productos));
+			}
+			menu = new Menu(id3,id2, costo, precio, productos);
 		}
 		return menu;
 	}
 	public void addMenu(Menu menu)throws SQLException, Exception{
 		String sql = "INSERT INTO MENUS VALUES (";
+		sql += menu.getIdRest()+",";
 		sql += menu.getIdMenu()+",";
 		sql += menu.getCosto()+",";
 		sql += menu.getPrecio()+")";
@@ -123,7 +124,7 @@ public class DAOTablaMenu {
 		String sql = "UPDATE MENUS SET ";
 		sql += "COSTO="+menu.getCosto()+",";
 		sql += "PRECIO=" + menu.getPrecio();
-		sql += "WHERE ID ="+ menu.getIdMenu();
+		sql += "WHERE ID ="+ menu.getIdMenu()+"and ID_RESTAURANTE ="+menu.getIdRest();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -132,7 +133,7 @@ public class DAOTablaMenu {
 	}
 	public void deleteMenu(Menu menu)throws SQLException, Exception{
 		String sql = "DELETE FROM MENUS SET ";
-		sql += "WHERE ID ="+ menu.getIdMenu();
+		sql += "WHERE ID ="+ menu.getIdMenu()+"and ID_RESTAURANTE ="+menu.getIdRest();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
