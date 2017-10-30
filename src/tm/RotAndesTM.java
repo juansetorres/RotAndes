@@ -1064,19 +1064,21 @@ public class RotAndesTM {
 		}
 	}
 
-	public void registrarPedidoMesa(Pedido pedido, String info) throws Exception {
-		DAOTablaPedidoMenu daoPedidoMenu = new DAOTablaPedidoMenu();
+	public void registrarPedidoMesa(Pedido pedido, List<Long> productos) throws Exception {
 		DAOTablaPedidoProductos daoPedidoProd = new DAOTablaPedidoProductos();
 		DAOTablaPedido daoPedido = new DAOTablaPedido();
 		try 
 		{
 			//////transaccion
 			this.conn = darConexion();
-			daoPedidoMenu.setConn(conn);
 			daoPedidoProd.setConn(conn);
 			daoPedido.setConn(conn);
 
 			daoPedido.addPedido(pedido);
+			
+			for (int i = 0; i < productos.size(); i++) {
+				daoPedidoProd.addPedidoProducto(new PedidoProducto(pedido.getNumPedido(), productos.get(i)));
+			}
 
 
 			conn.commit();
@@ -1092,11 +1094,50 @@ public class RotAndesTM {
 			throw e;
 		} finally {  
 			try {
-				daoPedidoMenu.cerrarRecursos();
 				daoPedidoProd.cerrarRecursos();
 				daoPedido.cerrarRecursos();
-				//daoMenu.cerrarRecursos();
-				//daoPlato.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	public void registrarPedidoMesaMenu(PedidoMesa pedido) throws Exception {
+		DAOTablaPedidoMenu daoPedidoMenu = new DAOTablaPedidoMenu();
+		DAOTablaPedido daoPedido = new DAOTablaPedido();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoPedidoMenu.setConn(conn);
+			daoPedido.setConn(conn);
+			if(pedido.getProductos().size() ==0) {
+				daoPedido.addPedido(pedido.getPedido());
+				
+			}
+			
+			for (int i = 0; i < pedido.getMenus().size(); i++) {
+				daoPedidoMenu.addPedidoMenu(new PedidoMenu(pedido.getPedido().getNumPedido(), pedido.getMenus().get(i)));
+			}
+
+			conn.commit();
+		} catch (SQLException e) {
+			conn.rollback();
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			conn.rollback();
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {  
+			try {
+				daoPedidoMenu.cerrarRecursos();
+				daoPedido.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {

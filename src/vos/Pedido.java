@@ -14,7 +14,7 @@ public class Pedido {
 	private String fecha;
 	
 	@JsonProperty(value="correo")
-	private String emailUser;
+	private String correo;
 	
 	@JsonProperty(value="pagado")
 	private int pagado;
@@ -29,13 +29,13 @@ public class Pedido {
 	private String cambios;
 
 	public Pedido(@JsonProperty(value="numPedido")Long numPedido, @JsonProperty(value="precio")double precio, @JsonProperty(value="fecha")String fecha, 
-			@JsonProperty(value="correo")String emailUser, @JsonProperty(value="pagado")int pagado, @JsonProperty(value="entregado")int entregado
+			@JsonProperty(value="correo")String correo, @JsonProperty(value="pagado")int pagado, @JsonProperty(value="entregado")int entregado
 			, @JsonProperty(value="hora")String hora, @JsonProperty(value="cambios") String cambios) {
 		super();
 		this.numPedido = numPedido;
 		this.precio = precio;
 		this.fecha = fecha;
-		this.emailUser = emailUser;
+		this.correo = correo;
 		this.pagado = pagado;
 		this.entregado = entregado;
 		this.hora = hora;
@@ -75,12 +75,12 @@ public class Pedido {
 		this.fecha = fecha;
 	}
 
-	public String getEmailUser() {
-		return emailUser;
+	public String getCorreo() {
+		return correo;
 	}
 
-	public void setEmailUser(String emailUser) {
-		this.emailUser = emailUser;
+	public void setCorreo(String correo) {
+		this.correo = correo;
 	}
 
 	public int getPagado() {

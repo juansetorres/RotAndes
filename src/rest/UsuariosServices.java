@@ -4,9 +4,10 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -16,6 +17,8 @@ import javax.ws.rs.core.Response;
 
 import tm.RotAndesTM;
 import vos.Pedido;
+import vos.PedidoMesa;
+import vos.PedidoProducto;
 import vos.Prefieren;
 import vos.Producto;
 import vos.Restaurante;
@@ -141,12 +144,6 @@ public class UsuariosServices {
 		return Response.status(200).entity(prefieren).build();
 	}
 	
-	@Path("{idUsuario: \\d+}/pedido")
-	public Class<PedidoService> realizarUnPedido(@PathParam( "idUsuario" ) Long id){
-		return PedidoService.class;
-	}
-	
-	
 	@GET
 	@Path( "{id: \\d+}/consumidos" )
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -160,5 +157,83 @@ public class UsuariosServices {
 			return Response.status(400).entity(doErrorMessage(e)).build();
 		} 
 		return Response.status(200).entity(prod).build();
+	}
+	
+	@POST
+	@Path("{id: \\d+}/mesa")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response registrarPedidoMesa(PedidoMesa pedido) {
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try {
+			if(pedido.getProductos().size() >0) {
+				tm.registrarPedidoMesa(pedido.getPedido(), pedido.getProductos());
+			}
+			if(pedido.getMenus().size()>0) {
+				tm.registrarPedidoMesaMenu(pedido);
+			}
+			
+		} catch (Exception e) {	
+			return Response.status(400).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedido.getPedido()).build();
+	}
+
+	@PUT
+	@Path("{idUsuario: \\d+}/pedido")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addPedidoEquiv( PedidoProducto  pedido){
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try{
+			tm.registrarPedidoEquiv(pedido);
+		}
+		catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedido).build();
+	}
+	
+	@GET
+	@Path("{idUsuario: \\d+}/pedido")
+	@Produces(MediaType.APPLICATION_JSON )
+	public Response getPedidos() {
+		RotAndesTM tm = new RotAndesTM(getPath());
+		List<Pedido> pedidos;
+		try {
+			pedidos = tm.darPedidos();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedidos).build();
+	}
+	
+	@PUT
+	@Path("{idUsuario: \\d+}/pedido/pagar")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response pagarPedido( PedidoProducto  pedido){
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try{
+			tm.pagarPedido(pedido);
+		}
+		catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedido).build();
+		
+	}
+	
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response cancelarPedido(Pedido pedido) {
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try {
+			tm.cancelarPedido(pedido);
+		} catch (Exception e) { 
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedido).build();
 	}
 }

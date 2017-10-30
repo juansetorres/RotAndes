@@ -1,0 +1,113 @@
+{
+	"variables": [],
+	"info": {
+		"name": "RotAndes3",
+		"_postman_id": "05e847cc-89d7-ffef-0b51-b897d8796064",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Consumidos usuario",
+			"request": {
+				"url": "http://localhost:8080/RotAndes/rest/usuarios/1/consumidos",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "EquivalenteIngredientes",
+			"request": {
+				"url": "http://localhost:8080/RotAndes/rest/restaurantes/1/equivalentes",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ingrediente\": \"uva\",\n\t\"equivalente\": \"fresa\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "SurtirProductos",
+			"request": {
+				"url": "http://localhost:8080/RotAndes/rest/restaurantes/1/surtir",
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "mesa",
+			"request": {
+				"url": "http://localhost:8080/RotAndes/rest/usuarios/1/mesa",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"pedido\":{\"numPedido\":2,\"precio\":150000,\"fecha\":\"29\\/10\\/17\",\"pagado\":1,\"entregado\":1,\"hora\":\"16:00\"},\n\n\t\"productos\":\n\t\t[\n\t\t\t1\n\t\t],\n\t\"menus\":[\n\t\t1\n\t\t]\n}\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "EquivalenteP",
+			"request": {
+				"url": "http://localhost:8080/RotAndes/rest/restaurantes/1/equivalenciaProducto",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"producto1\": 1,\n\t\"producto2\": 2\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Pedido",
+			"request": {
+				"url": "http://localhost:8080/RotAndes/rest/usuarios/1/pedido",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

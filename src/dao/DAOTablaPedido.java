@@ -56,7 +56,7 @@ public class DAOTablaPedido {
 	public ArrayList<Pedido> darPedidos() throws SQLException, Exception {
 		ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
 
-		String sql = "SELECT * FROM PEDIDO";
+		String sql = "SELECT * FROM PEDIDOS";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -134,7 +134,7 @@ public class DAOTablaPedido {
 		sql += pedido.getNumPedido() + ",";
 		sql += pedido.getPrecio() + ",";
 		sql += "TO_DATE('" + pedido.getFecha() + "', 'DD/MM/YYYY')"  + ",'";
-		sql += pedido.getEmailUser() + "',";
+		sql += pedido.getCorreo() + "',";
 		sql += pedido.getPagado() + ",";
 		sql += pedido.getEntregado() + ",'";
 		sql += pedido.getHora() + "','";

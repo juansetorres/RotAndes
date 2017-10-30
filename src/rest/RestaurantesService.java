@@ -190,10 +190,10 @@ public class RestaurantesService {
 		return Response.status(200).entity(rta).build();
 	}
 	@POST
-	@Path( "{idRest: \\d+}/equivalenciaProducto" )
+	@Path( "{id: \\d+}/equivalenciaProducto" )
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addEquivalentProduct(Long idRest,EquivalentesP equiv){
+	public Response addEquivalentProduct(@PathParam( "id" ) Long idRest,EquivalentesP equiv){
 		RotAndesTM tm = new RotAndesTM(getPath());
 		try {
 			tm.addEquivalenciaProducto(idRest,equiv);
@@ -216,7 +216,7 @@ public class RestaurantesService {
 		}
 		return Response.status( 200 ).entity( r ).build( );	
 	}
-	@Path("{idRestaurante: \\d+}/pedido")
+	@Path("{idUsuario: \\d+}/pedido")
 	public Class<PedidoService> realizarUnPedido(@PathParam( "idUsuario" ) Long id){
 		return PedidoService.class;
 	}

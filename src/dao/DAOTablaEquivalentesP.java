@@ -83,10 +83,10 @@ public class DAOTablaEquivalentesP {
 		public void addEquivalente(EquivalentesP equivalente) throws SQLException, Exception {
 
 			String sql = "INSERT INTO EQUIVALENTESP VALUES (";
-			sql += equivalente.getIdRest() + ",'";
-			sql += equivalente.getTipo() + "','";
-			sql += equivalente.getProdu1() + "',";
-			sql += "'"+equivalente.getProdu2()+"')"; 
+			sql += equivalente.getIdRest() + ",";
+			sql += equivalente.getProdu1() + ",";
+			sql += ""+equivalente.getProdu2()+" ,'"; 
+			sql += equivalente.getTipo() + "')";
 
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
 			recursos.add(prepStmt);
