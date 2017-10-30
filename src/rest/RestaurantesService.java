@@ -21,6 +21,7 @@ import vos.Menu;
 import vos.MenuProducto;
 import vos.Producto;
 import vos.Restaurante;
+import vos.Ventas;
 
 @Path("restaurantes")
 public class RestaurantesService {
@@ -200,6 +201,20 @@ public class RestaurantesService {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(equiv).build();
+	}
+	@GET
+	@Path( "{id: \\d+}/ventas" )
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getVentas(@PathParam( "id" ) Long idRest) {
+		RotAndesTM tm = new RotAndesTM( getPath( ) );
+		List<Ventas> r;
+		try{
+			r = tm.darVentas();
+		}
+		catch( Exception e ){
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+		return Response.status( 200 ).entity( r ).build( );	
 	}
 	@Path("{idRestaurante: \\d+}/pedido")
 	public Class<PedidoService> realizarUnPedido(@PathParam( "idUsuario" ) Long id){
