@@ -4,13 +4,13 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class PedidoMenu {
 
-	@JsonProperty(value="NUM_PEDIDO")
+	@JsonProperty(value="numPedido")
 	private Long numPedido;
 	
-	@JsonProperty(value="ID_MENU")
+	@JsonProperty(value="idMenu")
 	private Long idMenu;
 
-	public PedidoMenu(@JsonProperty(value="NUM_PEDIDO")Long numPedido, @JsonProperty(value="ID_MENU")Long idMenu) {
+	public PedidoMenu(@JsonProperty(value="numPedido")Long numPedido, @JsonProperty(value="idMenu")Long idMenu) {
 		super();
 		this.numPedido = numPedido;
 		this.idMenu = idMenu;

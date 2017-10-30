@@ -56,15 +56,15 @@ public class DAOTablaMenuProductos {
 	public ArrayList<MenuProducto> darMenuProducto() throws SQLException, Exception {
 		ArrayList<MenuProducto> menusP = new ArrayList<MenuProducto>();
 
-		String sql = "SELECT * FROM MENU_PROD";
+		String sql = "SELECT * FROM MENUPROD";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Long idMenu = rs.getLong("ID_MENU");
-			Long idPlato = rs.getLong("ID_PRODUCTO");
+			Long idMenu = rs.getLong("IDMENU");
+			Long idPlato = rs.getLong("IDPRODUCTO");
 			menusP.add(new MenuProducto(idMenu, idPlato));
 		}
 		return menusP;
@@ -74,16 +74,16 @@ public class DAOTablaMenuProductos {
 	{
 		MenuProducto menuProd = null;
 
-		String sql = "SELECT * FROM MENU_PROD WHERE ID_MENU =" + idMenu
-				+ " AND ID_PLATO =" + idPlato;
+		String sql = "SELECT * FROM MENUPROD WHERE IDMENU =" + idMenu
+				+ " AND IDPRODUCTO =" + idPlato;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			Long idMenu2 = rs.getLong("ID_MENU");
-			Long idPlato2 = rs.getLong("ID_PRODUCTO");
+			Long idMenu2 = rs.getLong("IDMENU");
+			Long idPlato2 = rs.getLong("IDPRODUCTO");
 			menuProd = new MenuProducto(idMenu2, idPlato2);
 		}
 
@@ -94,7 +94,7 @@ public class DAOTablaMenuProductos {
 	{
 		ArrayList<MenuProducto> menusProd = new ArrayList<MenuProducto>();
 
-		String sql = "SELECT * FROM MENU_PROD WHERE ID_PRODUCTO =" + idPlato;
+		String sql = "SELECT * FROM MENUPROD WHERE IDPRODUCTO =" + idPlato;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -112,15 +112,15 @@ public class DAOTablaMenuProductos {
 	{
 		ArrayList<MenuProducto> menusProd = new ArrayList<MenuProducto>();
 
-		String sql = "SELECT * FROM MENU_PROD WHERE ID_MENU =" + idMenu;
+		String sql = "SELECT * FROM MENUPROD WHERE IDMENU =" + idMenu;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Long idMenu2 = rs.getLong("ID_MENU");
-			Long idPlato2 = rs.getLong("ID_PRODUCTO");
+			Long idMenu2 = rs.getLong("IDMENU");
+			Long idPlato2 = rs.getLong("IDPRODUCTO");
 			menusProd.add(new MenuProducto(idMenu2, idPlato2));
 		}
 		return menusProd;
@@ -128,7 +128,7 @@ public class DAOTablaMenuProductos {
 
 	public void addMenuPlato(MenuProducto menuProd) throws SQLException, Exception {
 
-		String sql = "INSERT INTO MENU_PROD VALUES (";
+		String sql = "INSERT INTO MENUPROD VALUES (";
 		sql += menuProd.getIdMenu() + ",";
 		sql += menuProd.getIdProducto()+ ")";
 

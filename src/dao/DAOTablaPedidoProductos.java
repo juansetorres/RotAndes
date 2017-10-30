@@ -6,8 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import vos.Pedido;
 import vos.PedidoProducto;
-import vos.Zona;
+
 
 public class DAOTablaPedidoProductos {
 
@@ -100,17 +101,26 @@ public class DAOTablaPedidoProductos {
 	}
 	public void upDatePedidoProducto(PedidoProducto pedido)throws SQLException, Exception{
 		String sql = "UPDATE PEDIDOPRODUCTO SET ";
-		sql += "ID_PRODUCTO=" + pedido.getIdProducto();
-		sql += " WHERE ID = " + pedido.getNumPedido();
+		sql += "IDPRODUCTO=" + pedido.getIdProducto();
+		sql += " WHERE NUMPEDIDO = " + pedido.getNumPedido();
 
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
-	public void daeletePedidoProducto(PedidoProducto pedido)throws SQLException, Exception{
+	
+	public void deletePedidoProducto(PedidoProducto pedido)throws SQLException, Exception{
 		String sql = "DELETE FROM PEDIDOPRODUCTO";
-		sql += " WHERE ID_PRODUCTO = " + pedido.getIdProducto();
+		sql += " WHERE IDPRODUCTO = " + pedido.getIdProducto();
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	
+	public void removerPedidos(Pedido pedido) throws SQLException, Exception {
+		String sql = "DELETE FROM PEDIDOPRODUCTO WHERE NUMPEDIDO =" + pedido.getNumPedido();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

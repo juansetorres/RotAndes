@@ -15,9 +15,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotAndesTM;
-import vos.EquivalentesP;
 import vos.Pedido;
 import vos.Prefieren;
+import vos.Producto;
 import vos.Restaurante;
 import vos.Usuario;
 import vos.Zona;
@@ -140,8 +140,25 @@ public class UsuariosServices {
 		}
 		return Response.status(200).entity(prefieren).build();
 	}
+	
 	@Path("{idUsuario: \\d+}/pedido")
 	public Class<PedidoService> realizarUnPedido(@PathParam( "idUsuario" ) Long id){
 		return PedidoService.class;
+	}
+	
+	
+	@GET
+	@Path( "{id: \\d+}/consumidos" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response darProductosConsumidos(@PathParam( "id" ) Long id) {
+		RotAndesTM tm = new RotAndesTM(getPath());
+		List<Producto> prod;
+		try {
+			prod = tm.darProductosConsumidos(id);
+		} catch (Exception e) {
+			return Response.status(400).entity(doErrorMessage(e)).build();
+		} 
+		return Response.status(200).entity(prod).build();
 	}
 }

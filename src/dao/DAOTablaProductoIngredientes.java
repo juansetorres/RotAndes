@@ -55,15 +55,15 @@ public class DAOTablaProductoIngredientes {
 	public ArrayList<ProductoIngrediente> darIngredientes() throws SQLException, Exception {
 		ArrayList<ProductoIngrediente> ingredientesPlato = new ArrayList<>();
 
-		String sql = "SELECT * FROM PRODUCTO_ING";
+		String sql = "SELECT * FROM PRODUCTOING";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Long idPlato = rs.getLong("ID_PRODUCTO");
-			Long idIngrediente = rs.getLong("ID_ING");
+			Long idPlato = rs.getLong("IDPRODUCTO");
+			Long idIngrediente = rs.getLong("IDING");
 			ingredientesPlato.add(new ProductoIngrediente(idPlato, idIngrediente));
 		}
 		return ingredientesPlato;
@@ -72,15 +72,15 @@ public class DAOTablaProductoIngredientes {
 	public ArrayList<ProductoIngrediente> buscarIngredientesPlatoPorIngrediente(Long idIngr) throws SQLException, Exception {
 		ArrayList<ProductoIngrediente> ingredientesPlato = new ArrayList<>();
 
-		String sql = "SELECT * FROM PRODUCTO_ING WHERE ID_ING ='" + idIngr + "'";
+		String sql = "SELECT * FROM PRODUCTOING WHERE IDING ='" + idIngr + "'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Long idPlato = rs.getLong("ID_PRODUCTO");
-			Long idIngrediente = rs.getLong("ID_ING");
+			Long idPlato = rs.getLong("IDPRODUCTO");
+			Long idIngrediente = rs.getLong("IDING");
 			ingredientesPlato.add(new ProductoIngrediente(idPlato, idIngrediente));
 		}
 
@@ -90,15 +90,15 @@ public class DAOTablaProductoIngredientes {
 	public ArrayList<ProductoIngrediente> buscarIngredientesPlatoPorId(Long idPlato) throws SQLException, Exception {
 		ArrayList<ProductoIngrediente> ingredientesPlato = new ArrayList<ProductoIngrediente>();
 
-		String sql = "SELECT * FROM PRODUCTO_ING WHERE ID_PRODUCTO =" + idPlato;
+		String sql = "SELECT * FROM PRODUCTOING WHERE IDPRODUCTO =" + idPlato;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Long idPlato2 = rs.getLong("ID_PRODUCTO");
-			Long idIngrediente = rs.getLong("ID_ING");
+			Long idPlato2 = rs.getLong("IDPRODUCTO");
+			Long idIngrediente = rs.getLong("IDING");
 			ingredientesPlato.add(new ProductoIngrediente(idPlato2, idIngrediente));
 		}
 		return ingredientesPlato;
@@ -107,7 +107,7 @@ public class DAOTablaProductoIngredientes {
 	public ArrayList<ProductoIngrediente> buscarIngredientePlatoPorIdAndId(Long idPlato, Long idIngr) throws SQLException, Exception {
 		ArrayList<ProductoIngrediente> ingredientesPlato = new ArrayList<>();
 
-		String sql = "SELECT * FROM PRODUCTO_ING WHERE ID_PRODUCTO =" + idPlato
+		String sql = "SELECT * FROM PRODUCTOING WHERE IDPRODUCTO =" + idPlato
 				+ " AND ID_ING = '" + idIngr + "'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
@@ -115,8 +115,8 @@ public class DAOTablaProductoIngredientes {
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Long idPlato2 = rs.getLong("ID_PRODUCTO");
-			Long idIngrediente = rs.getLong("ID_ING");
+			Long idPlato2 = rs.getLong("IDPRODUCTO");
+			Long idIngrediente = rs.getLong("IDING");
 			ingredientesPlato.add(new ProductoIngrediente(idPlato2, idIngrediente));
 		}
 		return ingredientesPlato;
@@ -133,7 +133,7 @@ public class DAOTablaProductoIngredientes {
 	 */
 	public void addIngredientesPlato(ProductoIngrediente ingredientePlato) throws SQLException, Exception {
 
-		String sql = "INSERT INTO PRODUCTO_ING VALUES (";
+		String sql = "INSERT INTO PRODUCTOING VALUES (";
 		sql += ingredientePlato.getIdProducto() + ",'";
 		sql += ingredientePlato.getIdIng() + "')";
 		
@@ -153,9 +153,9 @@ public class DAOTablaProductoIngredientes {
 	 */
 	public void deleteIngredientesPlato(ProductoIngrediente ingredientePlato) throws SQLException, Exception {
 
-		String sql = "DELETE FROM PRODUCTO_ING_PLATO";
-		sql += " WHERE ID_PRODUCTO = " + ingredientePlato.getIdProducto();
-		sql += " AND ID_ING = '" + ingredientePlato.getIdIng()+ "'";
+		String sql = "DELETE FROM PRODUCTOING";
+		sql += " WHERE IDPRODUCTO = " + ingredientePlato.getIdProducto();
+		sql += " AND IDING = '" + ingredientePlato.getIdIng()+ "'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

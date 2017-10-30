@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -38,6 +39,7 @@ public class PedidoService {
 	private String doErrorMessage(Exception e){
 		return "{ \"ERROR\": \""+ e.getMessage() + "\"}" ;
 	}
+	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -51,6 +53,7 @@ public class PedidoService {
 		}
 		return Response.status(200).entity(pedido).build();
 	}
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON )
 	public Response getPedidos() {
@@ -63,6 +66,7 @@ public class PedidoService {
 		}
 		return Response.status(200).entity(pedidos).build();
 	}
+	
 	@PUT
 	@Path("/pagar")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -77,6 +81,19 @@ public class PedidoService {
 		}
 		return Response.status(200).entity(pedido).build();
 		
+	}
+	
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response cancelarPedido(Pedido pedido) {
+		RotAndesTM tm = new RotAndesTM(getPath());
+		try {
+			tm.cancelarPedido(pedido);
+		} catch (Exception e) { 
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedido).build();
 	}
 
 }

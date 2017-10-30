@@ -70,7 +70,7 @@ public class DAOTablaProductos {
 		}
 		return productos;
 	}
-	
+
 	public List<Producto> darProductos() throws SQLException, Exception {
 		ArrayList<Producto> productos = new ArrayList<>();
 
@@ -93,19 +93,19 @@ public class DAOTablaProductos {
 		}
 		return productos;
 	}
-	
+
 	public Producto darProductoId(Long idRest, Long idProd) throws SQLException, Exception {
 		Producto rta = null;
-		
+
 		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
 		daoRest.setConn(conn);
-		
+
 		String sql = "SELECT * FROM PRODUCTOS WHERE ID = " + idProd + " AND RESTAURANTE LIKE '" + daoRest.darRestaurante(idRest).getName() + "'";
-		
+
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
-		
+
 		while(rs.next()) {
 			Long id2 = rs.getLong("ID");
 			String name = rs.getString("NAME");
@@ -120,19 +120,19 @@ public class DAOTablaProductos {
 		}
 		return rta;
 	}
-	
+
 	public Producto darProducto(Long idProd) throws SQLException, Exception {
 		Producto rta = null;
-		
+
 		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
 		daoRest.setConn(conn);
-		
+
 		String sql = "SELECT * FROM PRODUCTOS WHERE ID = " + idProd;
-		
+
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
-		
+
 		while(rs.next()) {
 			Long id2 = rs.getLong("ID");
 			String name = rs.getString("NAME");
@@ -146,7 +146,7 @@ public class DAOTablaProductos {
 		}
 		return rta;
 	}
-	
+
 
 	public void addProductoRestaurante(Long idRest,Producto prodRest) throws SQLException, Exception {
 		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
@@ -165,11 +165,11 @@ public class DAOTablaProductos {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
-	
+
 	public void updateProductoRestaurante(Long idRest ,Producto prodRest) throws SQLException, Exception {
 		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
 		daoRest.setConn(conn);
-		
+
 		String sql = "UPDATE PRODUCTOS SET ";
 		sql += "NAME ='" + prodRest.getName()+"'";
 		sql += "DESCRIPCION ='" + prodRest.getDescripcion() + "'";
@@ -177,19 +177,19 @@ public class DAOTablaProductos {
 		sql += ", COSTO = "+ prodRest.getCosto();
 		sql += ", DISPONIBILIDAD = " + prodRest.getDisponibilidad();
 		sql += ", CANTIDADMAXIMA = " + prodRest.getCantidadMaxima();
-		
+
 		sql += " WHERE ID= " + prodRest.getId()+ " AND RESTAURANTE LIKE '" + 
-		daoRest.darRestaurante(idRest).getName()+"'";
-		
+				daoRest.darRestaurante(idRest).getName()+"'";
+
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();	
 	}
-	
+
 	public void deleteProductoRestaurante(Long idRest ,Producto prodRest) throws SQLException, Exception {
 		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
 		daoRest.setConn(conn);
-		
+
 		String sql = "DELETE FROM PRODUCTOS";
 		sql += " WHERE ID = " + prodRest.getId(); 
 		sql += " AND RESTAURANTE LIKE '" + daoRest.darRestaurante(idRest).getName() + "'";
@@ -198,15 +198,42 @@ public class DAOTablaProductos {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
-	
+
 	public void surtirProductos(Long idRest) throws SQLException, Exception {
 		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
 		daoRest.setConn(conn);
-		
+
 		String sql = "UPDATE PRODUCTOS SET DISPONIBILIDAD = CANTIDADMAXIMA  WHERE RESTAURANTE LIKE '" + daoRest.darRestaurante(idRest).getName() + "'";
-		
+
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();	
+	}
+
+	public List<Producto> darPlatosCliente(Usuario cliente) throws SQLException, Exception {
+		List<Producto> platos = new ArrayList<>();
+		String sql = "SELECT * FROM PRODUCTOS WHERE ID "
+				+ "IN (SELECT IDPRODUCTO FROM (PEDIDOPRODUCTO NATURAL JOIN PEDIDOS) "
+				+ "WHERE CORREO = '" + cliente.getCorreo() +"') OR ID IN "
+				+ "(SELECT IDPRODUCTO FROM MENUPROD WHERE IDMENU IN "
+				+ "(SELECT IDMENU FROM PEDIDOMENU NATURAL JOIN PEDIDOS "
+				+ "WHERE CORREO = '" + cliente.getCorreo() +"' ))";
+		System.out.println("BUSQUEDA C7: \n" + sql);
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			Long id = rs.getLong("ID");
+			String nombre2 = rs.getString("NAME");
+			String descripcion = rs.getString("DESCRIPCION");
+			double costo = rs.getFloat("COSTO");
+			double precio= rs.getFloat("PRECIO");
+			int disponibilidad = rs.getInt("DISPONIBILIDAD");
+			String restaurante = rs.getString("RESTAURANTE");
+			int cantidadMaxima = rs.getInt("CANTIDADMAXIMA");
+			platos.add(new Producto(id, nombre2, descripcion, costo, precio, disponibilidad, restaurante, cantidadMaxima));
+		}
+		return platos;
 	}
 }

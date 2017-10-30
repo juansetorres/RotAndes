@@ -1,13 +1,9 @@
 package vos;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-
-
 
 public class Producto {
 	
@@ -46,7 +42,7 @@ public class Producto {
 		this.disponibilidad = disponibilidad;
 		this.restaurante = restaurante;
 		this.cantidadMaxima = cantidadMaxima;
-		ingredientes = new ArrayList<>();
+		setIngredientes(new ArrayList<>());
 	}
 
 	public Long getId() {
@@ -111,5 +107,13 @@ public class Producto {
 
 	public void setCantidadMaxima(int cantidadMaxima) {
 		this.cantidadMaxima = cantidadMaxima;
+	}
+
+	public List<Ingrediente> getIngredientes() {
+		return ingredientes;
+	}
+
+	public void setIngredientes(List<Ingrediente> ingredientes) {
+		this.ingredientes = ingredientes;
 	}
 }
