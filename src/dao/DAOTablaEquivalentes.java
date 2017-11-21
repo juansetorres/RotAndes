@@ -57,26 +57,28 @@ public class DAOTablaEquivalentes {
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			String ingrediente = rs.getString("INGREDIENTE");
-			String equivalente = rs.getString("EQUIVALENTE");
-			equivalentes.add(new Equivalentes(ingrediente, equivalente));
+			Long ingrediente = rs.getLong("INGREDIENTE");
+			Long equivalente = rs.getLong("EQUIVALENTE");
+			Long idRest = rs.getLong("IDRESTAURANTE");
+			equivalentes.add(new Equivalentes(ingrediente, equivalente,idRest));
 		}
 		return equivalentes;
 	}
 	
-	public ArrayList<Equivalentes> buscarEquivalentesPorNombre(String nombreIngr) throws SQLException, Exception {
+	public ArrayList<Equivalentes> buscarEquivalentesPorNombre(Long ingred) throws SQLException, Exception {
 		ArrayList<Equivalentes> equivalentes = new ArrayList<Equivalentes>();
 
-		String sql = "SELECT * FROM EQUIVALENTES WHERE INGREDIENTE ='" + nombreIngr + "'";
+		String sql = "SELECT * FROM EQUIVALENTES WHERE INGREDIENTE =" + ingred + "";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			String ingrediente = rs.getString("INGREDIENTE");
-			String equivalente = rs.getString("EQUIVALENTE");
-			equivalentes.add(new Equivalentes(ingrediente, equivalente));
+			Long ingrediente = rs.getLong("INGREDIENTE");
+			Long equivalente = rs.getLong("EQUIVALENTE");
+			Long idRest = rs.getLong("IDRESTAURANTE");
+			equivalentes.add(new Equivalentes(ingrediente, equivalente,idRest));
 		}
 
 		return equivalentes;
@@ -84,9 +86,10 @@ public class DAOTablaEquivalentes {
 	
 	public void addEquivalente(Equivalentes equivalente) throws SQLException, Exception {
 
-		String sql = "INSERT INTO EQUIVALENTES VALUES ('";
-		sql += equivalente.getNomIngrediente() + "','";
-		sql += equivalente.getEquivalente() + "')";
+		String sql = "INSERT INTO EQUIVALENTES VALUES (";
+		sql += equivalente.getIngrediente() + ",'";
+		sql += equivalente.getEquivalente() + ",";
+		sql += equivalente.getIdRestaurante() + ")";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
