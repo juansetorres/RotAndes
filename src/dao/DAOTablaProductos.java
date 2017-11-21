@@ -48,10 +48,10 @@ public class DAOTablaProductos {
 		this.conn = con;
 	}
 
-	public List<Producto> darProductosPorRestaurante(String restaurante) throws SQLException, Exception {
+	public List<Producto> darProductosPorRestaurante(Long idRestaurante) throws SQLException, Exception {
 		ArrayList<Producto> productos = new ArrayList<>();
 
-		String sql = "SELECT * FROM PRODUCTOS WHERE RESTAURANTE = '" +restaurante +"'";
+		String sql = "SELECT * FROM PRODUCTOS WHERE IDRESTAURANTE = '" +idRestaurante +"'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -65,7 +65,7 @@ public class DAOTablaProductos {
 			double costo = rs.getDouble("COSTO");
 			int disponibilidad = rs.getInt("DISPONIBILIDAD");
 			Integer cantidadMaxima = rs.getInt("CANTIDADMAXIMA");
-			String rest = rs.getString("RESTAURANTE");
+			Long rest = rs.getLong("IDRESTAURANTE");
 			productos.add(new Producto(id, name, descrip, costo, precio, disponibilidad, rest, cantidadMaxima));
 		}
 		return productos;
@@ -88,7 +88,7 @@ public class DAOTablaProductos {
 			double costo = rs.getDouble("COSTO");
 			int disponibilidad = rs.getInt("DISPONIBILIDAD");
 			Integer cantidadMaxima = rs.getInt("CANTIDADMAXIMA");
-			String rest = rs.getString("RESTAURANTE");
+			Long rest = rs.getLong("IDRESTAURANTE");
 			productos.add(new Producto(id, name, descrip, costo, precio, disponibilidad, rest, cantidadMaxima));
 		}
 		return productos;
@@ -97,10 +97,9 @@ public class DAOTablaProductos {
 	public Producto darProductoId(Long idRest, Long idProd) throws SQLException, Exception {
 		Producto rta = null;
 
-		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
-		daoRest.setConn(conn);
 
-		String sql = "SELECT * FROM PRODUCTOS WHERE ID = " + idProd + " AND RESTAURANTE LIKE '" + daoRest.darRestaurante(idRest).getName() + "'";
+
+		String sql = "SELECT * FROM PRODUCTOS WHERE ID = " + idProd + " AND IDRESTAURANTE LIKE " + idRest + "";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -115,7 +114,7 @@ public class DAOTablaProductos {
 			int disponibilidad = rs.getInt("DISPONIBILIDAD");
 
 			Integer cantidadMaxima = rs.getInt("CANTIDADMAXIMA");
-			String rest = rs.getString("RESTAURANTE");
+			Long rest = rs.getLong("IDRESTAURANTE");
 			rta = new Producto(id2, name, descrip, costo, precio, disponibilidad, rest, cantidadMaxima);
 		}
 		return rta;
@@ -124,8 +123,6 @@ public class DAOTablaProductos {
 	public Producto darProducto(Long idProd) throws SQLException, Exception {
 		Producto rta = null;
 
-		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
-		daoRest.setConn(conn);
 
 		String sql = "SELECT * FROM PRODUCTOS WHERE ID = " + idProd;
 
@@ -141,7 +138,8 @@ public class DAOTablaProductos {
 			double costo = rs.getDouble("COSTO");
 			int disponibilidad = rs.getInt("DISPONIBILIDAD");
 			Integer cantidadMaxima = rs.getInt("CANTIDADMAXIMA");
-			String rest = rs.getString("RESTAURANTE");
+			Long rest = rs.getLong("IDRESTAURANTE");
+
 			rta = new Producto(id2, name, descrip, costo, precio, disponibilidad, rest, cantidadMaxima);
 		}
 		return rta;
@@ -149,8 +147,7 @@ public class DAOTablaProductos {
 
 
 	public void addProductoRestaurante(Long idRest,Producto prodRest) throws SQLException, Exception {
-		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
-		daoRest.setConn(conn);
+
 
 		String sql = "INSERT INTO PRODUCTOS VALUES (";
 		sql += prodRest.getId() + ", ";
@@ -159,7 +156,7 @@ public class DAOTablaProductos {
 		sql += prodRest.getCosto() + ", ";
 		sql += prodRest.getPrecio() +", ";
 		sql += prodRest.getDisponibilidad() + ", ";
-		sql += "'" + daoRest.darRestaurante(idRest).getName() + "', ";
+		sql += "" + idRest + ", ";
 		sql += prodRest.getCantidadMaxima() + ")";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -167,8 +164,6 @@ public class DAOTablaProductos {
 	}
 
 	public void updateProductoRestaurante(Long idRest ,Producto prodRest) throws SQLException, Exception {
-		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
-		daoRest.setConn(conn);
 
 		String sql = "UPDATE PRODUCTOS SET ";
 		sql += "NAME ='" + prodRest.getName()+"'";
@@ -178,8 +173,8 @@ public class DAOTablaProductos {
 		sql += ", DISPONIBILIDAD = " + prodRest.getDisponibilidad();
 		sql += ", CANTIDADMAXIMA = " + prodRest.getCantidadMaxima();
 
-		sql += " WHERE ID= " + prodRest.getId()+ " AND RESTAURANTE LIKE '" + 
-				daoRest.darRestaurante(idRest).getName()+"'";
+		sql += " WHERE ID= " + prodRest.getId()+ " AND IDRESTAURANTE LIKE " + 
+				idRest+"";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -187,12 +182,11 @@ public class DAOTablaProductos {
 	}
 
 	public void deleteProductoRestaurante(Long idRest ,Producto prodRest) throws SQLException, Exception {
-		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
-		daoRest.setConn(conn);
+
 
 		String sql = "DELETE FROM PRODUCTOS";
 		sql += " WHERE ID = " + prodRest.getId(); 
-		sql += " AND RESTAURANTE LIKE '" + daoRest.darRestaurante(idRest).getName() + "'";
+		sql += " AND IDRESTAURANTE LIKE " + idRest + "";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -200,10 +194,9 @@ public class DAOTablaProductos {
 	}
 
 	public void surtirProductos(Long idRest) throws SQLException, Exception {
-		DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
-		daoRest.setConn(conn);
 
-		String sql = "UPDATE PRODUCTOS SET DISPONIBILIDAD = CANTIDADMAXIMA  WHERE RESTAURANTE LIKE '" + daoRest.darRestaurante(idRest).getName() + "'";
+
+		String sql = "UPDATE PRODUCTOS SET DISPONIBILIDAD = CANTIDADMAXIMA  WHERE IDRESTAURANTE LIKE " + idRest + "";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -214,10 +207,10 @@ public class DAOTablaProductos {
 		List<Producto> platos = new ArrayList<>();
 		String sql = "SELECT * FROM PRODUCTOS WHERE ID "
 				+ "IN (SELECT IDPRODUCTO FROM (PEDIDOPRODUCTO NATURAL JOIN PEDIDOS) "
-				+ "WHERE CORREO = '" + cliente.getCorreo() +"') OR ID IN "
+				+ "WHERE CORREO = '" + cliente.getId() +"') OR ID IN "
 				+ "(SELECT IDPRODUCTO FROM MENUPROD WHERE IDMENU IN "
 				+ "(SELECT IDMENU FROM PEDIDOMENU NATURAL JOIN PEDIDOS "
-				+ "WHERE CORREO = '" + cliente.getCorreo() +"' ))";
+				+ "WHERE IDUSUARIO = '" + cliente.getId() +"' ))";
 		System.out.println("BUSQUEDA C7: \n" + sql);
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -230,9 +223,9 @@ public class DAOTablaProductos {
 			double costo = rs.getFloat("COSTO");
 			double precio= rs.getFloat("PRECIO");
 			int disponibilidad = rs.getInt("DISPONIBILIDAD");
-			String restaurante = rs.getString("RESTAURANTE");
+			Long rest = rs.getLong("IDRESTAURANTE");
 			int cantidadMaxima = rs.getInt("CANTIDADMAXIMA");
-			platos.add(new Producto(id, nombre2, descripcion, costo, precio, disponibilidad, restaurante, cantidadMaxima));
+			platos.add(new Producto(id, nombre2, descripcion, costo, precio, disponibilidad, rest, cantidadMaxima));
 		}
 		return platos;
 	}

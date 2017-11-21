@@ -116,6 +116,64 @@ public class DAOTablaUsuarios {
 		prepStmt.executeQuery();
 	}
 	
+	public ArrayList<Usuario> darUsuariosRestauranteFecha(Long idRest, String fi, String ff)throws SQLException, Exception{
+		ArrayList<Usuario> usuarios = new ArrayList<>();
+		String fechaI = fi.replace('-', '/');
+		String fechaF = ff.replace('-', '/');
+		System.out.println(fechaI);
+		System.out.println(fechaF);
+		
+		String sql = "select * from usuarios\n" + 
+				"where usuarios.id in (Select  b.id as idUsuario\n" + 
+				"from productos join (select pedidoproducto.IDPRODUCTO, a.id,a.name,a.fecha from pedidoproducto Join (select usuarios.id, usuarios.name , pedidos.fecha,pedidos.numpedido from usuarios join pedidos \n" + 
+				"on idusuario = usuarios.ID \n" + 
+				"where fecha between'"+ fechaI+"' and '"+ fechaF+"') a\n" + 
+				"on pedidoproducto.NUMPEDIDO = a.NUMPEDIDO) b\n" + 
+				"on productos.ID= b.IDPRODUCTO\n" + 
+				"where productos.IDRESTAUANTE ="+idRest+" )";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
 
+		while (rs.next()) {
+			String name = rs.getString("NAME");
+			Long id = rs.getLong("ID");
+			String correo = rs.getString("CORREO");
+			Integer rol = rs.getInt("ROL");
+			
+			usuarios.add(new Usuario(id,correo,name,rol));
+		}
+		return usuarios;
+	}
+	
+	public ArrayList<Usuario> darNoUsuariosRestauranteFecha(Long idRest, String fi, String ff)throws SQLException, Exception{
+		ArrayList<Usuario> usuarios = new ArrayList<>();
+		String fechaI = fi.replace('-', '/');
+		String fechaF = ff.replace('-', '/');
+		System.out.println(fechaI);
+		System.out.println(fechaF);
+		
+		String sql = "select * from usuarios\n" + 
+				"where usuarios.id not in (Select  b.id as idUsuario\n" + 
+				"from productos join (select pedidoproducto.IDPRODUCTO, a.id,a.name,a.fecha from pedidoproducto Join (select usuarios.id, usuarios.name , pedidos.fecha,pedidos.numpedido from usuarios join pedidos \n" + 
+				"on idusuario = usuarios.ID \n" + 
+				"where fecha between'"+ fechaI+"' and '"+ fechaF+"') a\n" + 
+				"on pedidoproducto.NUMPEDIDO = a.NUMPEDIDO) b\n" + 
+				"on productos.ID= b.IDPRODUCTO\n" + 
+				"where productos.IDRESTAUANTE ="+idRest+" )";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String name = rs.getString("NAME");
+			Long id = rs.getLong("ID");
+			String correo = rs.getString("CORREO");
+			Integer rol = rs.getInt("ROL");
+			
+			usuarios.add(new Usuario(id,correo,name,rol));
+		}
+		return usuarios;
+	}
 
 }

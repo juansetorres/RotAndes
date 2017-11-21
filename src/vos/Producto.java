@@ -25,15 +25,15 @@ public class Producto {
 	@JsonProperty(value="disponibilidad")
 	private Integer disponibilidad;
 
-	@JsonProperty(value="restaurante")
-	private String restaurante;
+	@JsonProperty(value="idrestaurante")
+	private Long restaurante;
 
 	@JsonProperty(value="cantidadMaxima")
 	private int cantidadMaxima;
 	
 	private List<Ingrediente> ingredientes;
 
-	public Producto(@JsonProperty(value="id") Long id,@JsonProperty(value="name") String pName, @JsonProperty(value="descripcion") String pDesc,@JsonProperty(value="costo") Double costo, @JsonProperty(value="precio") Double precio,@JsonProperty(value="disponibilidad") Integer disponibilidad,@JsonProperty(value="restaurante") String restaurante, @JsonProperty(value="cantidadMaxima") int cantidadMaxima){
+	public Producto(@JsonProperty(value="id") Long id,@JsonProperty(value="name") String pName, @JsonProperty(value="descripcion") String pDesc,@JsonProperty(value="costo") Double costo, @JsonProperty(value="precio") Double precio,@JsonProperty(value="disponibilidad") Integer disponibilidad,@JsonProperty(value="idrestaurante") Long restaurante, @JsonProperty(value="cantidadMaxima") int cantidadMaxima){
 		this.id = id;
 		this.name = pName;
 		this.descripcion = pDesc;
@@ -93,11 +93,11 @@ public class Producto {
 		this.disponibilidad = disponibilidad;
 	}
 
-	public String getRestaurante() {
+	public Long getRestaurante() {
 		return restaurante;
 	}
 
-	public void setRestaurante(String restaurante) {
+	public void setRestaurante(Long restaurante) {
 		this.restaurante = restaurante;
 	}
 

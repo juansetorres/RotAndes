@@ -66,12 +66,12 @@ public class DAOTablaPedido {
 			Long numPedido = rs.getLong("NUMPEDIDO");
 			double precio = rs.getDouble("PRECIO");
 			String fecha = rs.getString("FECHA");
-			String emailUser = rs.getString("CORREO");
+			Long usu = rs.getLong("IDUSUARIO");
 			int pagado = rs.getInt("PAGADO");
 			int entregado = rs.getInt("ENTREGADO");
 			String hora = rs.getString("HORA");
 			String cambio = rs.getString("CAMBIOS");	
-			pedidos.add(new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora,cambio));
+			pedidos.add(new Pedido(numPedido, precio, fecha, usu, pagado, entregado, hora,cambio));
 		}
 		return pedidos;
 	}
@@ -83,10 +83,10 @@ public class DAOTablaPedido {
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public ArrayList<Pedido> darPedidosCliente(String emailCliente) throws SQLException, Exception {
+	public ArrayList<Pedido> darPedidosCliente(Long idUsu) throws SQLException, Exception {
 		ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
 
-		String sql = "SELECT * FROM PEDIDOS WHERE EMAILUSER ='" + emailCliente + "'";
+		String sql = "SELECT * FROM PEDIDOS WHERE IDUSUARIO ='" + idUsu + "'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -96,15 +96,16 @@ public class DAOTablaPedido {
 			Long numPedido = rs.getLong("NUMPEDIDO");
 			double precio = rs.getDouble("PRECIO");
 			String fecha = rs.getString("FECHA");
-			String emailUser = rs.getString("CORREO");
+			Long usu = rs.getLong("IDUSUARIO");
 			int pagado = rs.getInt("PAGADO");
 			int entregado = rs.getInt("ENTREGADO");
 			String hora = rs.getString("HORA");
 			String cambio = rs.getString("CAMBIOS");
-			pedidos.add(new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio));
+			pedidos.add(new Pedido(numPedido, precio, fecha, usu, pagado, entregado, hora, cambio));
 		}
 		return pedidos;
 	}
+	
 	public Pedido darPedidoId(Long idPedido) throws SQLException, Exception {
 		Pedido pedidos =null;
 
@@ -118,12 +119,12 @@ public class DAOTablaPedido {
 			Long numPedido = rs.getLong("NUMPEDIDO");
 			double precio = rs.getDouble("PRECIO");
 			String fecha = rs.getString("FECHA");
-			String emailUser = rs.getString("CORREO");
+			Long usu = rs.getLong("IDUSUARIO");
 			int pagado = rs.getInt("PAGADO");
 			int entregado = rs.getInt("ENTREGADO");
 			String hora = rs.getString("HORA");
 			String cambio = rs.getString("CAMBIOS");
-			pedidos =new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio);
+			pedidos =new Pedido(numPedido, precio, fecha, usu, pagado, entregado, hora, cambio);
 		}
 		return pedidos;
 	}
@@ -133,8 +134,8 @@ public class DAOTablaPedido {
 		String sql = "INSERT INTO PEDIDOS VALUES (";
 		sql += pedido.getNumPedido() + ",";
 		sql += pedido.getPrecio() + ",";
-		sql += "TO_DATE('" + pedido.getFecha() + "', 'DD/MM/YYYY')"  + ",'";
-		sql += pedido.getCorreo() + "',";
+		sql += "TO_DATE('" + pedido.getFecha() + "', 'DD/MM/YYYY')"  + ",";
+		sql += pedido.getUsu() + ",";
 		sql += pedido.getPagado() + ",";
 		sql += pedido.getEntregado() + ",'";
 		sql += pedido.getHora() + "','";
