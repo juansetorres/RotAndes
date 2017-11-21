@@ -175,5 +175,34 @@ public class DAOTablaUsuarios {
 		}
 		return usuarios;
 	}
+	
+	public ArrayList<Usuario> darClientesFrecuentes()throws SQLException, Exception{
+		ArrayList<Usuario> usuarios = new ArrayList<>();
+		String sql = "select *\n" + 
+				"from usuarios where usuarios.id not in  (select a.id from pedidomenu Join (select usuarios.id, usuarios.name, pedidos.numpedido from usuarios join pedidos \n" + 
+				"on idusuario = usuarios.ID ) a\n" + 
+				"on pedidomenu.NUMPEDIDO = a.NUMPEDIDO)\n" + 
+				"union\n" + 
+				"select *\n" + 
+				"from usuarios where usuarios.id in(Select b.id\n" + 
+				"from productos join (select a.id,pedidoproducto.IDPRODUCTO from pedidoproducto Join (select usuarios.id, usuarios.name, pedidos.numpedido from usuarios join pedidos \n" + 
+				"on idusuario = usuarios.ID ) a\n" + 
+				"on pedidoproducto.NUMPEDIDO = a.NUMPEDIDO) b\n" + 
+				"on productos.id = b.IDPRODUCTO where productos.precio > 36885)";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String name = rs.getString("NAME");
+			Long id = rs.getLong("ID");
+			String correo = rs.getString("CORREO");
+			Integer rol = rs.getInt("ROL");
+			
+			usuarios.add(new Usuario(id,correo,name,rol));
+		}
+		return usuarios;
+	}
+	
 
 }

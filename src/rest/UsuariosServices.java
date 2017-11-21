@@ -267,4 +267,18 @@ public class UsuariosServices {
 		}
 		return Response.status(200).entity(usuarios).build();
 	}
+	
+	@GET
+	@Path("{idUsuario: \\d+}/frecuentes")
+	@Produces(MediaType.APPLICATION_JSON )
+	public Response getFrecuentes(@PathParam( "idUsuario" ) Long idUsuario) {
+		RotAndesTM tm = new RotAndesTM(getPath());
+		List<Usuario> usuarios;
+		try {
+			usuarios = tm.darClientesFrecuentes(idUsuario);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(usuarios).build();
+	}
 }

@@ -1423,4 +1423,39 @@ public class RotAndesTM {
 		}
 		return usuarios;
 	}
+	
+	public List<Usuario> darClientesFrecuentes(Long id)throws Exception{
+		List<Usuario> usuarios;
+		DAOTablaUsuarios daoUsu = new DAOTablaUsuarios();
+		if(buscarAdmin(id).getRol() != Usuario.ADMIN) {
+			throw new Exception("No es administrador");
+		}
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoUsu.setConn(conn);
+			usuarios = daoUsu.darClientesFrecuentes();
+		}
+		catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoUsu.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return usuarios;
+	}
 }

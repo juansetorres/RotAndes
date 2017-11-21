@@ -252,4 +252,6 @@ public class RestaurantesService {
 		}
 		return Response.status(200).entity(usuarios).build();
 	}
+	
+	
 }
