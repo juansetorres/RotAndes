@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import vos.Usuario;
 
 
+
 public class DAOTablaUsuarios {
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
@@ -130,7 +131,7 @@ public class DAOTablaUsuarios {
 				"where fecha between'"+ fechaI+"' and '"+ fechaF+"') a\n" + 
 				"on pedidoproducto.NUMPEDIDO = a.NUMPEDIDO) b\n" + 
 				"on productos.ID= b.IDPRODUCTO\n" + 
-				"where productos.IDRESTAUANTE ="+idRest+" )";
+				"where productos.idrestaurante ="+idRest+" )";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
@@ -160,7 +161,7 @@ public class DAOTablaUsuarios {
 				"where fecha between'"+ fechaI+"' and '"+ fechaF+"') a\n" + 
 				"on pedidoproducto.NUMPEDIDO = a.NUMPEDIDO) b\n" + 
 				"on productos.ID= b.IDPRODUCTO\n" + 
-				"where productos.IDRESTAUANTE ="+idRest+" )";
+				"where productos.idrestaurante ="+idRest+" )";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
@@ -203,6 +204,7 @@ public class DAOTablaUsuarios {
 		}
 		return usuarios;
 	}
+	
 	
 
 }

@@ -173,7 +173,6 @@ public class UsuariosServices {
 			if(pedido.getMenus().size()>0) {
 				tm.registrarPedidoMesaMenu(pedido);
 			}
-			
 		} catch (Exception e) {	
 			return Response.status(400).entity(doErrorMessage(e)).build();
 		}
@@ -281,4 +280,5 @@ public class UsuariosServices {
 		}
 		return Response.status(200).entity(usuarios).build();
 	}
+	
 }

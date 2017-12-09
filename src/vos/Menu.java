@@ -21,7 +21,6 @@ public class Menu {
 		id = pId;
 		costo = pCosto;
 		precio = pPrecio;
-		productos = rProductos;
 	}
 	public Long getIdMenu() {
 		return id;
